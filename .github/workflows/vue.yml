@@ -2,14 +2,14 @@ name: Build and Deploy Vue.js to gh-pages
 
 on:
   push:
-    branches: [ "main" ]  # 當main分支有推送時觸發
-  workflow_dispatch:      # 允許手動觸發
+    branches: [ "master" ]
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: write     # 需要寫入權限來推送到gh-pages分支
+      contents: write
     
     steps:
       - name: Checkout
@@ -29,11 +29,11 @@ jobs:
         run: npm run build
 
       - name: Copy CNAME file
-        run: echo 'judge.k12edu.us.kg' > ./dist/CNAME # 定義的網域名稱
+        run: echo 'judge.k12edu.us.kg' > ./dist/CNAME
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist  # Vue.js 默認的建置輸出目錄
+          publish_dir: ./dist
           publish_branch: gh-pages
