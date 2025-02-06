@@ -95,7 +95,7 @@
         this.sendIdTokenToBackend(token);
       },
       sendIdTokenToBackend(idToken) {
-          fetch(`${this.api_url}/accounts/api/google-login/`, {
+          fetch(`${this.api_url}/accounts/api/google-login2/`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
