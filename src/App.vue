@@ -65,6 +65,7 @@
 
         window.google.accounts.id.initialize({
           client_id: this.googleClientId,
+          scope: 'openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
           callback: this.handleCredentialResponse, // 當用戶成功登入時的回調函數
         });
 
@@ -83,29 +84,29 @@
         const token = response.credential;
         this.sendAccessTokenToBackend(token);
       },
-      sendAccessTokenToBackend(accessToken) {
-        fetch(`${this.api_url}/accounts/api/google-login/`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ access_token: accessToken }),
-        })
+      sendIdTokenToBackend(idToken) {
+          fetch(`${this.api_url}/accounts/api/google-login/`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ id_token: idToken }), // 修改成傳 id_token
+          })
           .then(response => response.json())
           .then(data => {
-            // 處理 Django 回傳的 JWT
-            if (data.access) {
-              this.access_token=data.access;
-              this.isLogin=true;
-              localStorage.setItem('jwt', data.access);
-              localStorage.setItem('refresh', data.refresh);
-              console.log('JWT token received and stored:', data);
-            } else {
-              console.error('JWT not received:', data);
-            }
+              // 處理 Django 回傳的 JWT
+              if (data.access) {
+                  this.access_token = data.access;
+                  this.isLogin = true;
+                  localStorage.setItem('jwt', data.access);
+                  localStorage.setItem('refresh', data.refresh);
+                  console.log('JWT token received and stored:', data);
+              } else {
+                  console.error('JWT not received:', data);
+              }
           })
-          .catch(error => console.error('Error sending access token to backend:', error));
-      }
+          .catch(error => console.error('Error sending id_token to backend:', error));
+      },
     },
   };
 
