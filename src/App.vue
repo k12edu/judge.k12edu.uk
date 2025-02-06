@@ -68,7 +68,6 @@
           scope: 'openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
           callback: this.handleCredentialResponse, // 當用戶成功登入時的回調函數
         });
-
         window.google.accounts.id.renderButton(
           document.getElementById('google-signin-button'), // 指定渲染按鈕的位置
           {
