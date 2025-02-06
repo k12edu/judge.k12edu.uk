@@ -82,7 +82,7 @@
         console.log('Google Sign-In Credential Response:', response);
         // 解析 JWT 資料（如需要）
         const token = response.credential;
-        this.sendAccessTokenToBackend(token);
+        this.sendIdTokenToBackend(token);
       },
       sendIdTokenToBackend(idToken) {
           fetch(`${this.api_url}/accounts/api/google-login/`, {
