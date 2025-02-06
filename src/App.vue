@@ -22,14 +22,24 @@
   </div>
 </template>
 <script>
+  import { computed } from 'vue';
   export default {
     data() {
       return {
         isLogin: false,
         googleClientId: '63473080805-na5r3r5d4m3ibnk1f7kvjgp7n1grnaoe.apps.googleusercontent.com', // 替換為你的 Google OAuth 客戶端 ID
         access_token: '',
+        api_url:"",
+        r_url:""
       };
     },
+    provide(){
+      return {
+        isLogIn : computed(() => this.isLogIn),
+        access_token:computed(() => this.access_token),
+        api_url:computed(() => this.api_url),
+      }
+    }, 
     mounted() {
       const currentDomain = window.location.hostname;
       console.log(currentDomain);
@@ -44,6 +54,7 @@
         console.log('test2');
       }
       this.loadGoogleScript();
+      this.access_token = localStorage.getItem('jwt');
     },
     methods: {
       // 動態加載 Google API 客戶端腳本
