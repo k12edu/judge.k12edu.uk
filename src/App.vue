@@ -26,11 +26,23 @@
     data() {
       return {
         isLogin: false,
-        googleClientId: 'YOUR_CLIENT_ID.apps.googleusercontent.com', // 替換為你的 Google OAuth 客戶端 ID
+        googleClientId: '63473080805-na5r3r5d4m3ibnk1f7kvjgp7n1grnaoe.apps.googleusercontent.com', // 替換為你的 Google OAuth 客戶端 ID
         access_token: '',
       };
     },
     mounted() {
+      const currentDomain = window.location.hostname;
+      console.log(currentDomain);
+      if(currentDomain=='localhost'){
+        this.api_url='http://127.0.0.1:60000';
+        this.r_url='http://localhost:8080/';
+        console.log('test1');
+      }
+      else{
+        this.api_url='https://api.k12edu.us.kg';
+        this.r_url='https://teacher.k12edu.us.kg/';
+        console.log('test2');
+      }
       this.loadGoogleScript();
     },
     methods: {
