@@ -33,7 +33,7 @@ export default {
       rankings: [],   // 排行榜資料
       currentPage: 1, // 當前頁數
       pageSize: 5,    // 每頁顯示的排名數量
-      total_pages: 1,
+      total_pages: 0,
       self_data: {},
     };
   },
@@ -64,7 +64,7 @@ export default {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const response_data = await response.json();
-        this.total_pages = response_data.total_pages;
+        if(this.total_pages==0) this.total_pages = response_data.total_pages;
         this.self_data = response_data.self_data;
         this.rankings = response_data.data; // 假設 API 回傳的資料是包含排行榜用戶和分數的陣列
       } catch (error) {
@@ -77,7 +77,9 @@ export default {
     },
   },
   mounted() {
+    this.total_pages=0;
     this.fetchRankings();
+    
   },
 };
 </script>

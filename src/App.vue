@@ -55,8 +55,63 @@
       }
       this.loadGoogleScript();
       this.access_token = localStorage.getItem('jwt');
+      if(this.checkAndRefreshToken()==false){
+        this.isLogin=false;
+      }
+      else{
+        this.isLogin=true;
+      }
     },
     methods: {
+      async checkAndRefreshToken() {
+        let accessToken = localStorage.getItem("jwt");
+        let refreshToken = localStorage.getItem("refres");
+
+        if (!accessToken) {
+            console.log("沒有 accessToken，請重新登入");
+            return false;
+        }
+
+        // 檢查 accessToken 是否過期
+        if (this.isTokenExpired(accessToken)) {
+            console.log("Access token 過期，嘗試使用 refresh token 取得新 token...");
+            return await this.refreshAccessToken(refreshToken);
+        }
+
+        console.log("Access token 仍有效");
+        return true;
+    },
+
+    // 檢查 JWT 是否過期
+      isTokenExpired(token) {
+        try {
+            const payload = JSON.parse(atob(token.split(".")[1])); // 解析 JWT payload
+            return payload.exp * 1000 < Date.now(); // 檢查是否過期
+        } catch (error) {
+            return true; // 若 JWT 解析失敗，視為過期
+        }
+    },
+      async refreshAccessToken(refreshToken) {
+        try {
+            const response = await fetch(`${this.api_url}/api/token/refresh/`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ refresh: refreshToken })
+            });
+
+            if (!response.ok) throw new Error("Refresh token 無效");
+
+            const data = await response.json();
+            localStorage.setItem("jwt", data.access);
+            console.log("成功刷新 accessToken");
+            return true;
+        } catch (error) {
+            console.log("Refresh token 失敗，請重新登入", error);
+            localStorage.removeItem("jwt");
+            localStorage.removeItem("refresh");
+            return false;
+        }
+    },
       // 動態加載 Google API 客戶端腳本
       loadGoogleScript() {
         const script = document.createElement('script');

@@ -3,7 +3,15 @@
         <!-- 公告區域 -->
         <div class="announcement-section">
         <h2>最新公告</h2>
-        <router-view></router-view>
+        <div v-if="announcements.length" class="announcement-list">
+          <div v-for="announcement in announcements" :key="announcement.id" class="announcement-card">
+            <h3>{{ announcement.title }}</h3>
+            <p>{{ announcement.announcement_description }}</p>
+          </div>
+        </div>
+        <div v-else class="no-announcements">
+          <p>目前沒有公告</p>
+        </div>
         </div>
 
         <!-- 網站介紹區域 -->
@@ -39,10 +47,42 @@
     data(){
       return {
         bodyTitle: 'Home Page',
+        announcements: [],
       }
     },
     props: {
 
+    },
+    inject: ['api_url', 'access_token'],
+    methods:{
+      async fetchAnnouncements() {
+      try {
+        const defaultParams = {
+          page: 1,
+          per_page: 3,
+        };
+
+        const queryParams = new URLSearchParams(defaultParams);
+        const response = await fetch(`${this.api_url}/onlinejudge/api/announcement/list?${queryParams.toString()}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.access_token}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        this.announcements = data.announcements;
+      } catch (error) {
+        console.error("取得公告時發生錯誤：", error);
+      }
+    },
+    },
+
+    mounted(){
+      this.fetchAnnouncements();
     }
   }
   </script>
@@ -50,6 +90,44 @@
   <!-- Add "scoped" attribute to limit CSS to this component only -->
    
   <style scoped>
+    .announcement-list {
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .announcement-card {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+      min-height: 200px;
+      text-align: left;
+      text-overflow: ellipsis;
+    }
+
+    .announcement-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .announcement-card h3 {
+      margin: 0 0 10px 0;
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+    .announcement-card p {
+      margin: 0;
+      color: #555;
+    }
+
+    .no-announcements {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #777;
+    }
     .main-content {
         display: flex;
         flex-direction: column;
@@ -59,6 +137,9 @@
     }
 
     .announcement-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     width: 100%;
     max-width: 800px;
     background-color: #f9f9f9;

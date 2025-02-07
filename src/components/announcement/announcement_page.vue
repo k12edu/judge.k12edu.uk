@@ -1,87 +1,146 @@
 <template>
-    <div class="announcement-page" style="min-height: 100vh;">
-      <h1>公告</h1>
-      <div v-if="announcements.length">
-        <ul>
-          <li v-for="announcement in paginatedAnnouncements" :key="announcement.id">
-            <h3>{{ announcement.title }}</h3>
-            <p>{{ announcement.content }}</p>
-          </li>
-        </ul>
-      </div>
-      <div v-else>
-        <p>目前沒有公告。</p>
-      </div>
-      <div class="pagination">
-        <button @click="changePage(page)" :class="{ active: currentPage === page }" v-for="page in totalPages" :key="page">
-          {{ page }}
-        </button>
+  <div class="announcement-page">
+    <h1>公告</h1>
+    <div v-if="announcements.length" class="announcement-list">
+      <div v-for="announcement in announcements" :key="announcement.id" class="announcement-card">
+        <h3>{{ announcement.title }}</h3>
+        <p>{{ announcement.announcement_description }}</p>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        announcements: [], // 全部公告
-        currentPage: 1,    // 當前頁數
-        pageSize: 5,       // 每頁顯示幾筆資料
-      };
+    <div v-else class="no-announcements">
+      <p>目前沒有公告</p>
+    </div>
+    <div class="pagination">
+      <button @click="changePage(page)" :class="{ active: currentPage === page }" v-for="page in totalPages" :key="page">
+        {{ page }}
+      </button>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      announcements: [], // 全部公告
+      currentPage: 1,    // 當前頁數
+      pageSize: 5,       // 每頁顯示幾筆資料
+      total_page: 0,
+    };
+  },
+  computed: {
+    totalPages() {
+      return this.total_page;
     },
-    computed: {
-      totalPages() {
-        return Math.ceil(this.announcements.length / this.pageSize);
-      },
-      paginatedAnnouncements() {
-        const start = (this.currentPage - 1) * this.pageSize;
-        return this.announcements.slice(start, start + this.pageSize);
-      },
-    },
-    methods: {
-      async fetchAnnouncements() {
-        try {
-          const response = await fetch("https://your-api-endpoint.com/announcements");
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          this.announcements = data; // 假設 API 回傳的資料是一個公告陣列
-        } catch (error) {
-          console.error("取得公告時發生錯誤：", error);
+  },
+  inject: ['api_url', 'access_token'],
+  methods: {
+    async fetchAnnouncements() {
+      try {
+        const defaultParams = {
+          page: this.currentPage,
+          per_page: this.pageSize,
+        };
+
+        const queryParams = new URLSearchParams(defaultParams);
+        const response = await fetch(`${this.api_url}/onlinejudge/api/announcement/list?${queryParams.toString()}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.access_token}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      },
-      changePage(page) {
-        this.currentPage = page;
-      },
+        const data = await response.json();
+        if(this.total_page==0) this.total_page = data.total_page;
+        this.announcements = data.announcements;
+      } catch (error) {
+        console.error("取得公告時發生錯誤：", error);
+      }
     },
-    mounted() {
+    changePage(page) {
+      this.currentPage = page;
       this.fetchAnnouncements();
     },
-  };
-  </script>
-  
-  <style scoped>
-  .announcement-page {
-    padding: 20px;
-  }
-  
-  .pagination {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    border: 1px solid #ddd;
-    background-color: white;
-    cursor: pointer;
-  }
-  
-  button.active {
-    background-color: #007bff;
-    color: white;
-  }
-  </style>
-  
+  },
+  mounted() {
+    this.total_page=0;
+    this.fetchAnnouncements();
+  },
+};
+</script>
+
+<style scoped>
+.announcement-page {
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+}
+
+.announcement-list {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.announcement-card {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  min-height: 200px;
+  text-align: left;
+}
+
+.announcement-card:hover {
+  transform: translateY(-5px);
+}
+
+.announcement-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.announcement-card p {
+  margin: 0;
+  color: #555;
+}
+
+.no-announcements {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #777;
+}
+
+.pagination {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #eee;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #ddd;
+}
+
+button.active {
+  background-color: #007bff;
+  color: white;
+}
+</style>
