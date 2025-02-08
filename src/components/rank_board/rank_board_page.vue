@@ -1,6 +1,17 @@
 <template>
   <div class="rank-board-page" style="min-height: 100vh;">
     <h1>排行榜</h1>
+    <div class="items-per-page">
+      <label for="perPage">每頁顯示數量:</label>
+      <input
+        type="number"
+        id="perPage"
+        v-model="pageSize"
+        min="1"
+        @input="changeItemPerPage"
+        placeholder="輸入每頁顯示的資料筆數"
+      />
+    </div>
     <div v-if="rankings.length">
       <div class="rank-grid">
         <div class="rank-grid-header">
@@ -19,7 +30,7 @@
       <p>目前沒有排名資料。</p>
     </div>
     <div class="pagination">
-      <button @click="changePage(page)" :class="{ active: currentPage === page }" v-for="page in totalPages" :key="page">
+      <button @click="changePage(page)" :class="{ active: currentPage === page }" v-for="page in displayedPages" :key="page">
         {{ page }}
       </button>
     </div>
@@ -38,18 +49,39 @@ export default {
     };
   },
   computed: {
+    displayedPages() {
+      const pagesToShow = 10; // 最多顯示 10 頁
+      let startPage = Math.max(1, this.currentPage - Math.floor(pagesToShow / 2));
+      let endPage = Math.min(this.totalPages, startPage + pagesToShow - 1);
+
+      // 確保頁數範圍合法，並且不會超過總頁數
+      if (endPage - startPage + 1 < pagesToShow) {
+        startPage = Math.max(1, endPage - pagesToShow + 1);
+      }
+
+      // 生成顯示的頁數範圍
+      let pages = [];
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      return pages;
+    },
     totalPages() {
       return this.total_pages;
     },
   },
   inject: ['api_url', 'access_token'],
   methods: {
+    changeItemPerPage(){
+        this.total_pages=0;
+        this.changePage(1);
+      },
     async fetchRankings() {
       try {
         const defaultParams = {
           suject: 'program',
           page: this.currentPage,
-          num: 10,
+          num: this.pageSize,
         };
 
         const queryParams = new URLSearchParams(defaultParams)
@@ -64,7 +96,7 @@ export default {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const response_data = await response.json();
-        if(this.total_pages==0) this.total_pages = response_data.total_pages;
+        if(this.total_pages!=response_data.total_pages) this.total_pages = response_data.total_pages;
         this.self_data = response_data.self_data;
         this.rankings = response_data.data; // 假設 API 回傳的資料是包含排行榜用戶和分數的陣列
       } catch (error) {
@@ -126,5 +158,19 @@ button {
 button.active {
   background-color: #007bff;
   color: white;
+}
+
+.items-per-page {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.items-per-page input {
+  padding: 5px 10px;
+  font-size: 16px;
+  width: 100px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 </style>

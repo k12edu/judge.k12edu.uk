@@ -1,5 +1,8 @@
 <template>
   <div class="v-container" style="min-height: 100vh; width: 60%; gap: 20px;">
+    <div v-if="problem" class="h-container">
+      <h1>{{ problem.title }}</h1>
+    </div>
     <div class="problem-description">
       <h2>題目敘述</h2>
       <div v-if="loading">載入中...</div>
@@ -32,6 +35,7 @@ export default {
   name: 'CodeEditor',
   data() {
     return {
+      problem:null,
       description: '', // 題目敘述內容
       loading: true,   // 載入狀態
       error: null,     // 錯誤訊息
@@ -41,22 +45,35 @@ export default {
     };
   },
   props: {
-    problemId: {
-      type: String,
-      required: true, // 接收題目 ID 作為參數
-    },
   },
+  computed:{
+    problemId() {
+      return this.$route.query.problemId || ""; // 避免 undefined
+    }
+  },
+  inject: ['api_url', 'access_token'],
   methods: {
     // 獲取題目敘述
     async fetchDescription() {
-      const url = `https://example.com/api/problems/${this.problemId}`;
       try {
-        const response = await fetch(url);
+          const defaultParams = {
+            id: this.problemId,
+          };
+
+        const queryParams = new URLSearchParams(defaultParams)
+        const response = await fetch(`${this.api_url}/onlinejudge/api/problem/get?${queryParams.toString()}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.access_token}`,
+          },
+        });
         if (!response.ok) {
           throw new Error(`HTTP 錯誤：${response.status}`);
         }
         const data = await response.json();
-        this.description = data.description || '無法取得題目內容';
+        this.problem=data.problem;
+        this.description = data.problem.problem_description || '無法取得題目內容';
       } catch (err) {
         this.error = '無法取得題目敘述，請稍後再試';
         console.error(err);
@@ -160,15 +177,24 @@ export default {
     async submitCode() {
       const codeContent = this.editor.state.doc.toString();  // 從編輯器取得代碼
       console.log(codeContent);
-      const url = 'https://your-backend-url.com/api/submit-code'; // 替換為你的後端 API 路徑
+      let l=this.language;
+      if(l=='python') l='py';
+      const url = `${this.api_url}/judge/submit/`; // 替換為你的後端 API 路徑
 
       try {
+        let data2={
+            'language': l,
+            'code': codeContent,
+            'problemId': this.$route.query.problemId,
+          };
+        console.log(data2);
         const response = await fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.access_token}`,
           },
-          body: JSON.stringify({ code: codeContent }), // 將代碼作為 JSON 發送
+          body: JSON.stringify(data2),
         });
 
         if (!response.ok) {
@@ -185,6 +211,7 @@ export default {
   },
 
   mounted() {
+    console.log(this.$route.query.problemId);
     this.fetchDescription(); // 組件掛載時請求資料
     this.initializeEditor(); // 初始化編輯器
   },
@@ -217,8 +244,9 @@ export default {
   }
 /* 確保編輯器有高度 */
 .codemirror-container {
-  height: 400px; /* 調整為你需要的高度 */
+  height: 500px; /* 調整為你需要的高度 */
   width: 100%;  /* 設為 100% 寬度 */
+  overflow: auto;
 }
 .problem-description {
   border: 1px solid #ccc;

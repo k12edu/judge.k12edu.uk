@@ -1,6 +1,17 @@
 <template>
   <div class="announcement-page">
     <h1>公告</h1>
+    <div class="items-per-page">
+      <label for="perPage">每頁顯示數量:</label>
+      <input
+        type="number"
+        id="perPage"
+        v-model="pageSize"
+        min="1"
+        @input="changeItemPerPage"
+        placeholder="輸入每頁顯示的資料筆數"
+      />
+    </div>
     <div v-if="announcements.length" class="announcement-list">
       <div v-for="announcement in announcements" :key="announcement.id" class="announcement-card">
         <h3>{{ announcement.title }}</h3>
@@ -11,7 +22,7 @@
       <p>目前沒有公告</p>
     </div>
     <div class="pagination">
-      <button @click="changePage(page)" :class="{ active: currentPage === page }" v-for="page in totalPages" :key="page">
+      <button @click="changePage(page)" :class="{ active: currentPage === page }" v-for="page in displayedPages" :key="page">
         {{ page }}
       </button>
     </div>
@@ -29,12 +40,33 @@ export default {
     };
   },
   computed: {
+    displayedPages() {
+      const pagesToShow = 10; // 最多顯示 10 頁
+      let startPage = Math.max(1, this.currentPage - Math.floor(pagesToShow / 2));
+      let endPage = Math.min(this.totalPages, startPage + pagesToShow - 1);
+
+      // 確保頁數範圍合法，並且不會超過總頁數
+      if (endPage - startPage + 1 < pagesToShow) {
+        startPage = Math.max(1, endPage - pagesToShow + 1);
+      }
+
+      // 生成顯示的頁數範圍
+      let pages = [];
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      return pages;
+    },
     totalPages() {
       return this.total_page;
     },
   },
   inject: ['api_url', 'access_token'],
   methods: {
+    changeItemPerPage(){
+        this.total_page=0;
+        this.changePage(1);
+      },
     async fetchAnnouncements() {
       try {
         const defaultParams = {
@@ -54,7 +86,7 @@ export default {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        if(this.total_page==0) this.total_page = data.total_page;
+        if(this.total_page!=data.total_page) this.total_page = data.total_page;
         this.announcements = data.announcements;
       } catch (error) {
         console.error("取得公告時發生錯誤：", error);
@@ -142,5 +174,19 @@ button:hover {
 button.active {
   background-color: #007bff;
   color: white;
+}
+
+.items-per-page {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.items-per-page input {
+  padding: 5px 10px;
+  font-size: 16px;
+  width: 100px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 </style>

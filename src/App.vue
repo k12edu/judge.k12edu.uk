@@ -1,5 +1,5 @@
 <template>
-  <div class="v-container">
+  <div class="v-container" style="max-width: 100vw;">
     <div class="menu-container" style="height: 70px;">
       <router-link style="width: 120px;" to="/" class="menu-item">OnlineJudge</router-link>
       <nav class="menu">
@@ -223,7 +223,7 @@
   .menu-item {
     text-decoration: none; /* 移除超連結預設的下劃線 */
     padding: 10px 20px;
-    border: 2px solid #ffd06b;
+    border: 2px solid lightblue;
     border-radius: 5px;
     color: #000000;
     font-weight: bold;
@@ -244,19 +244,17 @@
     transform: scale(0.95); /* 點擊時的縮放效果 */
   }
   .footer {
-  background-color: #333;
-  color: white;
-  padding: 20px 10px;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-}
+    background-color: #333;
+    color: white;
+    padding: 20px 0px;
+    bottom: 0;
+    width: 100%;
+  }
 
 .footer-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap; /* 讓內容在小螢幕上自動換行 */
   margin: 0 auto;
 }
 </style>

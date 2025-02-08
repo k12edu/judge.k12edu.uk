@@ -1,40 +1,59 @@
 <template>
-    <div class="problem-list-container" style="min-height: 100vh;">
-      <h1>題目列表</h1>
-  
-      <!-- 顯示多選標籤 -->
-      <div class="tag-filter">
-        <label for="tags">選擇標籤:</label>
-        <div class="tags">
-          <label v-for="tag in tags" :key="tag" class="tag-option">
-            <input
-              type="checkbox"
-              :value="tag"
-              v-model="selectedTags"
-              class="checkbox-input"
-              @change="fetchProblems"
-            />
-            <span class="tag-text">{{ tag }}</span>
-          </label>
-        </div>
-      </div>
-  
-      <!-- 顯示題目列表 -->
-      <div v-if="loading" class="loading">載入中...</div>
-      <div v-else>
-        <div v-for="problem in problems" :key="problem.id" class="problem-item">
-          <h3>{{ problem.title }}</h3>
-          <p>{{ problem.is_solved }}</p>
-          <p><strong>標籤:</strong> {{ problem.tag.join(', ') }}</p>
-        </div>
-      </div>
-      <div class="pagination">
-        <button @click="changePage(page)" :class="{ active: currentPage === page }" v-for="page in totalPages" :key="page">
-          {{ page }}
-        </button>
+  <div class="problem-list-container" style="min-height: 100vh;">
+    <h1>題目列表</h1>
+    <div class="items-per-page">
+      <label for="perPage">每頁顯示數量:</label>
+      <input
+        type="number"
+        id="perPage"
+        v-model="per_page"
+        min="1"
+        @input="changeItemPerPage"
+        placeholder="輸入每頁顯示的資料筆數"
+      />
+    </div>
+    <!-- 顯示多選標籤 -->
+    <div class="tag-filter">
+      <label for="tags">選擇標籤:</label>
+      <div class="tags">
+        <label v-for="tag in tags" :key="tag" class="tag-option">
+          <input
+            type="checkbox"
+            :value="tag"
+            v-model="selectedTags"
+            class="checkbox-input"
+            @change="fetchProblems"
+          />
+          <span class="tag-text">{{ tag }}</span>
+        </label>
       </div>
     </div>
-  </template>
+
+    <!-- 顯示題目列表 -->
+    <div v-if="loading" class="loading">載入中...</div>
+    <div v-else>
+      <div class="problem-grid">
+        <div v-for="problem in problems" :key="problem.problem_id" class="problem-item" @click="goToProblem(problem.problem_id)">
+          <div class="problem-number">#{{ problem.problem_id }}</div>
+          <div class="problem-title">{{ problem.title }}</div>
+          <div class="problem-difficulty">{{ problem.difficulty }}</div>
+          <div class="problem-status">
+            <span :class="{'completed': problem.is_solved, 'not-completed': !problem.is_solved}">
+              {{ problem.is_solved ? '已完成' : '未完成' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 分頁 -->
+    <div class="pagination">
+      <button @click="changePage(page)" :class="{ active: currentPage === page }" v-for="page in displayedPages" :key="page">
+        {{ page }}
+      </button>
+    </div>
+  </div>
+</template>
   
   <script>
   export default {
@@ -50,6 +69,23 @@
       };
     },
     computed: {
+      displayedPages() {
+      const pagesToShow = 10; // 最多顯示 10 頁
+      let startPage = Math.max(1, this.currentPage - Math.floor(pagesToShow / 2));
+      let endPage = Math.min(this.totalPages, startPage + pagesToShow - 1);
+
+      // 確保頁數範圍合法，並且不會超過總頁數
+      if (endPage - startPage + 1 < pagesToShow) {
+        startPage = Math.max(1, endPage - pagesToShow + 1);
+      }
+
+      // 生成顯示的頁數範圍
+      let pages = [];
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      return pages;
+    },
       totalPages() {
         return this.total_page;
       },
@@ -57,6 +93,13 @@
     },
     inject: ['api_url', 'access_token'],
     methods: {
+      changeItemPerPage(){
+        this.total_page=0;
+        this.changePage(1);
+      },
+      goToProblem(problemId) {
+        this.$router.push({ path: `/problem`, query: { problemId: problemId } });
+      },
       changePage(page) {
         this.currentPage = page;
         this.fetchProblems();
@@ -89,7 +132,7 @@
             },
           });
           const data = await response.json();
-          if(this.total_page==0) this.total_page = data.total_page;
+          if(this.total_page!=data.total_page) this.total_page = data.total_page;
           this.problems = data.problems;  // 假設回應資料包含一個問題列表
         } catch (error) {
           console.error('獲取題目資料錯誤:', error);
@@ -127,56 +170,102 @@
   </script>
   
   <style scoped>
-  .problem-list-container {
-    padding: 20px;
-  }
-  
-  .tag-filter {
-    margin-bottom: 20px;
-  }
-  
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  
-  .tag-option {
-    display: flex;
-    align-items: center;
-    padding: 5px 10px;
-    border: 2px solid #ffd06b;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, border-color 0.3s;
-  }
-  
-  .tag-option:hover {
-    background-color: #ff9838;
-    border-color: #ff9838;
-  }
-  
-  .checkbox-input {
-    margin-right: 10px;
-  }
-  
-  .tag-text {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .problem-item {
-    border: 1px solid #ccc;
-    margin: 10px 0;
-    padding: 10px;
-  }
-  
-  .loading {
-    text-align: center;
-    font-size: 18px;
-  }
+.problem-list-container {
+  padding: 20px;
+}
 
-  .pagination {
+.tag-filter {
+  margin-bottom: 20px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag-option {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  border: 2px solid #ffd06b;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.tag-option:hover {
+  background-color: #ff9838;
+  border-color: #ff9838;
+}
+
+.checkbox-input {
+  margin-right: 10px;
+}
+
+.tag-text {
+  font-weight: bold;
+  color: #333;
+}
+
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.problem-item {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.problem-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.problem-number {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.problem-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.problem-difficulty {
+  font-size: 14px;
+  color: #888;
+  margin-top: 5px;
+}
+
+.problem-status {
+  margin-top: 10px;
+}
+
+.problem-status .completed {
+  color: green;
+  font-weight: bold;
+}
+
+.problem-status .not-completed {
+  color: red;
+  font-weight: bold;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+}
+
+.pagination {
   display: flex;
   justify-content: center;
   gap: 10px;
@@ -194,5 +283,17 @@ button.active {
   background-color: #007bff;
   color: white;
 }
-  </style>
-  
+.items-per-page {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.items-per-page input {
+  padding: 5px 10px;
+  font-size: 16px;
+  width: 100px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+</style>
