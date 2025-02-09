@@ -1,6 +1,9 @@
 <template>
   <div class="announcement-page">
     <h1>公告</h1>
+    <div class="back-div" >
+      <p class="back-button" @click="goBack">返回上一頁</p>
+    </div>
     <div class="items-per-page">
       <label for="perPage">每頁顯示數量:</label>
       <input
@@ -63,6 +66,9 @@ export default {
   },
   inject: ['api_url', 'access_token'],
   methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
     changeItemPerPage(){
         this.total_page=0;
         this.changePage(1);
@@ -105,6 +111,23 @@ export default {
 </script>
 
 <style scoped>
+.back-div{
+  display: flex;
+  width: 100%;
+  justify-content: left;
+  padding: 10px 20px;
+}
+.back-button {
+  width: 100px;
+  background: #f0f0f0;
+  padding: 6px 6px;
+  cursor: pointer;
+  border: 0px solid #ccc;
+  border-radius: 6px;
+}
+.back-button:hover {
+  background: #ddd;
+}
 .announcement-page {
   padding: 20px;
   min-height: 100vh;

@@ -1,5 +1,8 @@
 <template>
   <div class="problem-list-container" style="min-height: 100vh;">
+    <div class="back-div" >
+      <p class="back-button" @click="goBack">返回上一頁</p>
+    </div>
     <h1>討論區</h1>
     <div class="items-per-page">
       <label for="perPage">每頁顯示數量:</label>
@@ -17,7 +20,7 @@
     <div v-if="loading" class="loading">載入中...</div>
     <div v-else>
       <div class="problem-grid">
-        <div v-for="article in articles" :key="article.id" class="problem-item" @click="goToProblem(article.id)">
+        <div v-for="article in articles" :key="article.id" class="problem-item" @click="goToArticle(article.id)">
           <div class="problem-number">題目: {{ article.problem_title }}</div>
           <div class="problem-title">主題: {{ article.title }}</div>
           <div class="problem-difficulty">留言數: {{ article.comment_count }}</div>
@@ -70,12 +73,15 @@
     },
     inject: ['api_url', 'access_token'],
     methods: {
+      goBack() {
+      this.$router.go(-1);
+    },
       changeItemPerPage(){
         this.total_page=0;
         this.changePage(1);
       },
-      goToProblem(problemId) {
-        this.$router.push({ path: `/problem`, query: { problemId: problemId } });
+      goToArticle(articleId) {
+        this.$router.push({ path: `/forum/disscussion`, query: { articleId: articleId } });
       },
       changePage(page) {
         this.currentPage = page;
@@ -114,6 +120,23 @@
   </script>
   
   <style scoped>
+  .back-div{
+  display: flex;
+  width: 100%;
+  justify-content: left;
+  padding: 10px 20px;
+}
+.back-button {
+  width: 100px;
+  padding: 6px 6px;
+  background: #f0f0f0;
+  cursor: pointer;
+  border: 0px solid #ccc;
+  border-radius: 6px;
+}
+.back-button:hover {
+  background: #ddd;
+}
 .problem-list-container {
   padding: 20px;
   width: 60%;

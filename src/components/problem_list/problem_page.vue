@@ -1,5 +1,8 @@
 <template>
   <div class="v-container" style="min-height: 100vh; width: 60%; gap: 20px;">
+    <div class="back-div" >
+      <p class="back-button" @click="goBack">返回上一頁</p>
+    </div>
     <div v-if="problem" class="h-container">
       <h1>{{ problem.title }}</h1>
     </div>
@@ -8,6 +11,9 @@
       <div v-if="loading">載入中...</div>
       <div v-else-if="error" class="error-message">{{ error }}</div>
       <div v-else class="description-content" v-html="description"></div>
+    </div>
+    <div v-if="problem" class="v-container">
+      <p>標籤: {{ getTag}}</p>
     </div>
     <!-- 編輯器容器 -->
     <div class="h-container">
@@ -54,10 +60,21 @@ export default {
   computed:{
     problemId() {
       return this.$route.query.problemId || ""; // 避免 undefined
+    },
+    getTag(){
+      if(this.problem.tag.length==0) return "";
+      let res=this.problem.tag[0];
+      for(let i=1;i<this.problem.tag.length;i++){
+        res+=","+this.problem.tag[i];
+      }
+      return res;
     }
   },
   inject: ['api_url', 'access_token'],
   methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
     gotoArticleList(){
       this.$router.push({ path: `/problem_article_list`, query: { problemId: this.$route.query.problemId } });
     },
@@ -221,6 +238,23 @@ export default {
 </script>
 
 <style scoped>
+.back-div{
+  display: flex;
+  width: 100%;
+  justify-content: left;
+  padding: 10px 20px;
+}
+.back-button {
+  width: 100px;
+  padding: 6px 6px;
+  background: #f0f0f0;
+  cursor: pointer;
+  border: 0px solid #ccc;
+  border-radius: 6px;
+}
+.back-button:hover {
+  background: #ddd;
+}
 .btn {
     text-decoration: none; /* 移除超連結預設的下劃線 */
     padding: 10px 20px;

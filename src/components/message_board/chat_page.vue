@@ -1,172 +1,250 @@
 <template>
-    <div class="discussion-container" style="min-height: 100vh;">
-      <h1>{{ topicTitle }}</h1>
-  
-      <!-- 顯示留言 -->
-      <div v-if="loading" class="loading">載入中...</div>
-      <div v-else>
-        <div v-if="comments.length > 0" class="comments-section">
-          <h2>留言區</h2>
-          <div v-for="comment in comments" :key="comment.id" class="comment-item">
-            <p><strong>{{ comment.author }}:</strong> {{ comment.content }}</p>
-            <p class="comment-time">{{ formatDate(comment.timestamp) }}</p>
-          </div>
+  <div class="problem-list-container">
+    <div class="back-div" >
+      <p class="back-button" @click="goBack">返回上一頁</p>
+      <p class="back-button" @click="goToProblem">前往題目</p>
+    </div>
+    <h1 v-if="article" class="title">{{ article.title }}</h1>
+    <div class="items-per-page" style="margin: 20px 0px;">
+      <label for="perPage">每頁顯示數量:</label>
+      <input
+        type="number"
+        id="perPage"
+        v-model="per_page"
+        min="1"
+        @input="changeItemPerPage"
+        placeholder="輸入每頁顯示的資料筆數"
+      />
+    </div>
+
+    <div v-if="loading" class="loading">載入中...</div>
+    <div v-else>
+      <div class="problem-list">
+        <div v-if="article" class="problem-item">
+          <div class="problem-number">作者: {{ article.author }}</div>
+          <div class="problem-title">題目: {{ article.problem_title }}</div>
+          <div class="problem-title">標題: {{ article.title }}</div>
+          <div class="problem-content">{{ article.content }}</div>
         </div>
-        <div v-else class="no-comments">目前還沒有留言，快來留下第一則吧！</div>
-      </div>
-  
-      <!-- 留言輸入框 -->
-      <div class="comment-input-section">
-        <h2>新增留言</h2>
-        <textarea
-          v-model="newComment"
-          placeholder="輸入您的留言..."
-          rows="4"
-          class="comment-input"
-        ></textarea>
-        <button @click="postComment" :disabled="posting" class="comment-button">
-          {{ posting ? "發送中..." : "發送留言" }}
-        </button>
+        <div v-for="comment in comments" :key="comment.id" class="problem-item">
+          <div class="problem-number">作者: {{ comment.author }}</div>
+          <div class="problem-content">{{ comment.content }}</div>
+        </div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        topicTitle: "討論主題", // 主題標題，可以從父組件或 API 接收
-        comments: [], // 用於存放留言的陣列
-        newComment: "", // 新留言內容
-        loading: false, // 是否正在載入留言
-        posting: false, // 是否正在發送留言
-      };
+
+    <div class="pagination">
+      <button @click="changePage(page)" :class="{ active: currentPage === page }" v-for="page in displayedPages" :key="page">
+        {{ page }}
+      </button>
+    </div>
+
+    <div class="new-comment">
+      <h2>新增留言</h2>
+      <input v-model="title" type="text" placeholder="輸入標題" class="input" />
+      <textarea v-model="content" placeholder="輸入內容" class="textarea"></textarea>
+      <button @click="submitComment" class="submit-btn">發布</button>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      comments: [],
+      article: {},
+      loading: false,
+      currentPage: 1,
+      total_page: 0,
+      per_page: 10,
+      title: '',
+      content: ''
+    };
+  },
+  computed: {
+    displayedPages() {
+      const pagesToShow = 10;
+      let startPage = Math.max(1, this.currentPage - Math.floor(pagesToShow / 2));
+      let endPage = Math.min(this.totalPages, startPage + pagesToShow - 1);
+      if (endPage - startPage + 1 < pagesToShow) {
+        startPage = Math.max(1, endPage - pagesToShow + 1);
+      }
+      return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
     },
-    methods: {
-      // 獲取留言列表
-      async fetchComments() {
-        this.loading = true;
-        try {
-          const response = await fetch("https://your-api.com/discussion/comments"); // 替換為你的 API
-          const data = await response.json();
-          this.comments = data.comments; // 假設 API 回傳 { comments: [...] }
-        } catch (error) {
-          console.error("獲取留言失敗：", error);
-        } finally {
-          this.loading = false;
-        }
+    totalPages() {
+      return this.total_page;
+    }
+  },
+  inject: ['api_url', 'access_token'],
+  methods: {
+    goToProblem() {
+        this.$router.push({ path: `/problem`, query: { problemId: this.article.problem_id } });
       },
-      // 發送留言
-      async postComment() {
-        if (!this.newComment.trim()) {
-          alert("留言內容不能為空！");
-          return;
-        }
-  
-        this.posting = true;
-        try {
-          const response = await fetch("https://your-api.com/discussion/comments", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              content: this.newComment,
-            }),
-          });
-  
-          if (response.ok) {
-            const newCommentData = await response.json();
-            this.comments.push(newCommentData); // 將新留言新增至列表
-            this.newComment = ""; // 清空輸入框
-          } else {
-            console.error("留言發送失敗：", response.statusText);
-          }
-        } catch (error) {
-          console.error("發送留言時發生錯誤：", error);
-        } finally {
-          this.posting = false;
-        }
-      },
-      // 格式化時間戳
-      formatDate(timestamp) {
-        const date = new Date(timestamp);
-        return date.toLocaleString();
-      },
+    goBack() {
+      this.$router.go(-1);
     },
-    created() {
-      this.fetchComments(); // 組件創建時獲取留言
+    async submitComment() {
+      if (!this.title || !this.content) {
+        alert('標題與內容不能為空');
+        return;
+      }
+      try {
+        let data = {
+          'article_id': this.$route.query.articleId,
+          'content': this.content,
+        };
+        const response = await fetch(`${this.api_url}/onlinejudge/comment/create/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.access_token}`,
+          },
+          body: JSON.stringify(data),  
+        });
+        const res = await response.json();
+        console.log(res);
+        alert('留言發佈成功！');
+        this.fetchArticles();
+        this.title = '';
+        this.content = '';
+      } catch (error) {
+        console.error('發佈失敗', error);
+        alert('發佈失敗，請稍後再試');
+      }
     },
-  };
-  </script>
-  
-  <style scoped>
-  .discussion-container {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+    changeItemPerPage() {
+      this.total_page = 0;
+      this.changePage(1);
+    },
+    changePage(page) {
+      this.currentPage = page;
+      this.fetchArticles();
+    },
+    async fetchArticles() {
+      this.loading = true;
+      try {
+        const queryParams = new URLSearchParams({
+          page: this.currentPage,
+          per_page: this.per_page,
+        });
+        const response = await fetch(`${this.api_url}/onlinejudge/article/${this.$route.query.articleId}/comments/?${queryParams.toString()}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.access_token}`,
+          },
+        });
+        const data = await response.json();
+        this.total_page = data.total_page;
+        this.comments = data.comments;
+        this.article = data.article;
+      } catch (error) {
+        console.error('獲取資料錯誤:', error);
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
+  mounted() {
+    this.fetchArticles();
   }
-  
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .comments-section {
-    margin-top: 20px;
-  }
-  
-  .comment-item {
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
-  }
-  
-  .comment-item:last-child {
-    border-bottom: none;
-  }
-  
-  .comment-time {
-    font-size: 0.8rem;
-    color: gray;
-  }
-  
-  .no-comments {
-    text-align: center;
-    color: #666;
-    margin-top: 20px;
-  }
-  
-  .comment-input-section {
-    margin-top: 30px;
-  }
-  
-  .comment-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    resize: none;
-  }
-  
-  .comment-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  .comment-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .comment-button:hover:not(:disabled) {
-    background-color: #0056b3;
-  }
-  </style>
-  
+};
+</script>
+
+<style scoped>
+.back-div{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+.back-button {
+  width: 100px;
+  padding: 6px 6px;
+  background: #f0f0f0;
+  cursor: pointer;
+  border: 0px solid #ccc;
+  border-radius: 6px;
+}
+.back-button:hover {
+  background: #ddd;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+button {
+padding: 10px 20px;
+border: 1px solid #ddd;
+background-color: white;
+cursor: pointer;
+}
+
+button.active {
+background-color: #007bff;
+color: white;
+}
+.new-comment {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+.input, .textarea {
+  width: 80%;
+  padding: 10px;
+  margin: 20px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.textarea {
+  margin: 20px 0;
+  height: 150px;
+  resize: none;
+}
+.submit-btn {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.submit-btn:hover {
+  background: #0056b3;
+}
+
+.problem-list-container {
+  padding: 20px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.problem-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.problem-item {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.problem-content {
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 5px;
+}
+</style>

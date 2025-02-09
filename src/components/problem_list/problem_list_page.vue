@@ -1,5 +1,8 @@
 <template>
   <div class="problem-list-container" style="min-height: 100vh;">
+    <div class="back-div" >
+      <p class="back-button" @click="goBack">返回上一頁</p>
+    </div>
     <h1>題目列表</h1>
     <div class="items-per-page">
       <label for="perPage">每頁顯示數量:</label>
@@ -93,6 +96,9 @@
     },
     inject: ['api_url', 'access_token'],
     methods: {
+      goBack() {
+        this.$router.go(-1);
+      },
       changeItemPerPage(){
         this.total_page=0;
         this.changePage(1);
@@ -170,8 +176,26 @@
   </script>
   
   <style scoped>
+  .back-div{
+  display: flex;
+  width: 100%;
+  justify-content: left;
+  padding: 10px 20px;
+}
+.back-button {
+  width: 100px;
+  padding: 6px 6px;
+  background: #f0f0f0;
+  cursor: pointer;
+  border: 0px solid #ccc;
+  border-radius: 6px;
+}
+.back-button:hover {
+  background: #ddd;
+}
 .problem-list-container {
   padding: 20px;
+  width: 80%;
 }
 
 .tag-filter {
