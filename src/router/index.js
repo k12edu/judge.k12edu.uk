@@ -8,6 +8,7 @@ import profile_page from '@/components/profile/profile_page.vue'
 import login_page from '@/components/login/login_page.vue'
 import problem_page from '@/components/problem_list/problem_page.vue'
 import chat_page from '@/components/message_board/chat_page.vue'
+import problem_article_page from '@/components/message_board/problem_article_page.vue'
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     path: '/announcement',
     name: 'announcement',
     component: announcement_page
+  },
+  {
+    path: '/problem_article_list',
+    name: 'problem_article_plist',
+    component: problem_article_page
   },
   {
     path: '/problem_list',

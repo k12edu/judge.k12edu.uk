@@ -210,6 +210,8 @@
     max-width: 100%; /* 最大寬度，限制內容的總寬度 */
     width: 100%; /* 確保在小屏幕時撐滿 */
     box-sizing: border-box; /* 包含內邊距 */
+    flex-wrap: nowrap; /* 確保內容不換行 */
+    overflow: hidden; /* 避免溢出 */
   }
 
 
@@ -232,10 +234,11 @@
     text-align: center;
     user-select: none; 
     cursor: pointer;
+    white-space: nowrap; /* 避免文字換行 */
   }
 
   .menu-item:hover {
-    background-color: #ff9838;
+    background-color: lightblue;
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }

@@ -10,7 +10,10 @@
       <div v-else class="description-content" v-html="description"></div>
     </div>
     <!-- 編輯器容器 -->
-    <button @click="submitCode" class="btn">提交</button>
+    <div class="h-container">
+      <button style="margin: 0px 10px;" @click="submitCode" class="btn">提交</button>
+      <button style="margin: 0px 10px;" @click="gotoArticleList" class="btn">討論區</button>
+    </div>
     <select v-model="language" @change="changeLanguage">
       <option value="java">Java</option>
       <option value="python">Python</option>
@@ -25,11 +28,13 @@
 </template>
 
 <script>
-import { EditorView, basicSetup } from 'codemirror'
-import { EditorState } from '@codemirror/state'
-import { java } from '@codemirror/lang-java'
-import { python } from '@codemirror/lang-python'
-import { cpp } from '@codemirror/lang-cpp'
+import { EditorView, basicSetup } from "codemirror";
+import { EditorState } from "@codemirror/state";
+import { keymap } from "@codemirror/view";
+import { indentWithTab } from "@codemirror/commands";
+import { java } from "@codemirror/lang-java";
+import { python } from "@codemirror/lang-python";
+import { cpp } from "@codemirror/lang-cpp";
 
 export default {
   name: 'CodeEditor',
@@ -53,6 +58,9 @@ export default {
   },
   inject: ['api_url', 'access_token'],
   methods: {
+    gotoArticleList(){
+      this.$router.push({ path: `/problem_article_list`, query: { problemId: this.$route.query.problemId } });
+    },
     // 獲取題目敘述
     async fetchDescription() {
       try {
@@ -82,32 +90,32 @@ export default {
       }
     },
 
-    // 初始化編輯器
+    
+
     initializeEditor() {
       const myTheme = EditorView.theme({
-        "&": {
-          textAlign: "left", // 確保文字靠左對齊
-        },
+        "&": { textAlign: "left" },
       });
+
       const borderedTheme = EditorView.theme({
-        "&": {
-          border: "1px solid #ccc", // 邊框
-          borderRadius: "4px", // 圓角邊框
-          padding: "4px", // 內部間距
-        },
+        "&": { border: "1px solid #ccc", borderRadius: "4px", padding: "4px" },
       });
+
       const noOutlineTheme = EditorView.theme({
-        "&.cm-editor.cm-focused": {
-          outline: "none", // 移除整個編輯器的外框
-        },
-        ".cm-selectionMatch": {
-          outline: "none", // 移除選取匹配的虛線框
-        },
+        "&.cm-editor.cm-focused": { outline: "none" },
+        ".cm-selectionMatch": { outline: "none" },
       });
 
       const cmOptions = {
-        doc: this.codeContent, // 初始內容
-        extensions: [basicSetup, python(), myTheme, borderedTheme, noOutlineTheme],
+        doc: this.codeContent,
+        extensions: [
+          basicSetup,
+          python(),
+          myTheme,
+          borderedTheme,
+          noOutlineTheme,
+          keymap.of([indentWithTab]), // 讓 Tab 插入縮排，而不是切換焦點
+        ],
       };
 
       const state = EditorState.create({
@@ -124,47 +132,41 @@ export default {
     // 切換語言
     changeLanguage() {
       if (this.editor) {
-        // 清除編輯器的父容器內容
         this.editor.destroy();
         this.editor = null;
-        
+
         const myTheme = EditorView.theme({
-        "&": {
-          textAlign: "left", // 確保文字靠左對齊
-        },
-      });
-      const borderedTheme = EditorView.theme({
-        "&": {
-          border: "1px solid #ccc", // 邊框
-          borderRadius: "4px", // 圓角邊框
-          padding: "4px", // 內部間距
-        },
-      });
-      const noOutlineTheme = EditorView.theme({
-        "&.cm-editor.cm-focused": {
-          outline: "none", // 移除整個編輯器的外框
-        },
-        ".cm-selectionMatch": {
-          outline: "none", // 移除選取匹配的虛線框
-        },
-      });
-      const ext = [basicSetup, python(), myTheme, borderedTheme, noOutlineTheme]
-      if (this.language === 'java') {
+          "&": { textAlign: "left" },
+        });
+
+        const borderedTheme = EditorView.theme({
+          "&": { border: "1px solid #ccc", borderRadius: "4px", padding: "4px" },
+        });
+
+        const noOutlineTheme = EditorView.theme({
+          "&.cm-editor.cm-focused": { outline: "none" },
+          ".cm-selectionMatch": { outline: "none" },
+        });
+
+        const ext = [basicSetup, myTheme, borderedTheme, noOutlineTheme, keymap.of([indentWithTab])];
+
+        if (this.language === 'java') {
           ext.push(java());
         } else if (this.language === 'python') {
           ext.push(python());
         } else if (this.language === 'c' || this.language === 'cpp') {
           ext.push(cpp());
         }
-      const cmOptions = {
-        doc: this.codeContent, // 初始內容
-        extensions: ext,
-      };
 
-      const state = EditorState.create({
-        doc: cmOptions.doc,
-        extensions: cmOptions.extensions,
-      });
+        const cmOptions = {
+          doc: this.codeContent,
+          extensions: ext,
+        };
+
+        const state = EditorState.create({
+          doc: cmOptions.doc,
+          extensions: cmOptions.extensions,
+        });
 
         this.editor = new EditorView({
           state,
@@ -222,7 +224,7 @@ export default {
 .btn {
     text-decoration: none; /* 移除超連結預設的下劃線 */
     padding: 10px 20px;
-    border: 2px solid #22a507;
+    border: 2px solid lightblue;
     border-radius: 5px;
     color: #000000;
     font-weight: bold;
@@ -234,7 +236,7 @@ export default {
   }
 
   .btn:hover {
-    background-color: #13a30e;
+    background-color: lightblue;
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
@@ -247,6 +249,7 @@ export default {
   height: 500px; /* 調整為你需要的高度 */
   width: 100%;  /* 設為 100% 寬度 */
   overflow: auto;
+  margin-bottom: 100px;
 }
 .problem-description {
   border: 1px solid #ccc;
