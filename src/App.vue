@@ -9,7 +9,7 @@
         <router-link to="/rank" class="menu-item">排行榜</router-link>
       </nav>
       <div style="width: 150px;" v-if="!isLogin" id="google-signin-button" @click="googleLogin"></div>
-      <router-link style="width: 150px;" v-if="isLogin" to="/profile" class="menu-item">個人資料</router-link>
+      <router-link style="width: 150px;" v-if="isLogin" :to="{ path: '/profile', query: { id: 0 } }" class="menu-item">個人資料</router-link>
     </div>
     <router-view></router-view>
     <footer class="footer">
@@ -70,10 +70,10 @@
       localStorage.removeItem('refresh');
       this.access_token="";
       this.isLogIn=false;
-      this.$router.push({ name: 'MainPage' });
       window.location.reload(); 
+      this.$router.push({ name: 'home' });
     },
-      async checkAndRefreshToken() {
+      checkAndRefreshToken() {
         let accessToken = localStorage.getItem("jwt");
         let refreshToken = localStorage.getItem("refres");
 
@@ -85,7 +85,7 @@
         // 檢查 accessToken 是否過期
         if (this.isTokenExpired(accessToken)) {
             console.log("Access token 過期，嘗試使用 refresh token 取得新 token...");
-            return await this.refreshAccessToken(refreshToken);
+            return this.refreshAccessToken(refreshToken);
         }
 
         console.log("Access token 仍有效");
@@ -179,6 +179,7 @@
               } else {
                   console.error('JWT not received:', data);
               }
+              window.location.reload(); 
           })
           .catch(error => console.error('Error sending id_token to backend:', error));
       },

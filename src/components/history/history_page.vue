@@ -22,14 +22,16 @@
         <div class="submission-grid">
           <div class="grid-header">題號</div>
           <div class="grid-header">題目</div>
+          <div class="grid-header">語言</div>
           <div class="grid-header">上傳時間</div>
           <div class="grid-header">上傳結果</div>
           
           <template v-for="history in histories" :key="history.submission_id">
             <div>{{ history.problem_id }}</div>
             <div @click="goToProblem(history.problem_id)" class="clickable">{{ history.problem_title }}</div>
+            <div>{{ history.language }}</div>
             <div>{{ history.submit_time }}</div>
-            <div :class="{'success': history.submit_result === 'Accepted', 'failed': history.submit_result !== 'Accepted'}">
+            <div :class="{'success': history.submit_result === 'AC', 'failed': history.submit_result !== 'AC'}">
               {{ history.submit_result }}
             </div>
           </template>
@@ -124,7 +126,7 @@
   
   .submission-grid {
     display: grid;
-    grid-template-columns: 1fr 2fr 2fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr 2fr 1fr;
     gap: 10px;
     width: 100%;
     text-align: center;

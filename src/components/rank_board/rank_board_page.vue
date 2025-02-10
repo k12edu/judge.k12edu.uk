@@ -24,7 +24,7 @@
         </div>
         <div class="rank-grid-item" v-for="(ranking) in rankings" :key="ranking.id">
           <p class="rank_data">{{ ranking.rank }}</p>
-          <p class="rank_data">{{ ranking.user_name }}</p>
+          <p class="rank_data link" @click="goToProfile(ranking.id)">{{ ranking.user_name }}</p>
           <p class="rank_data">{{ ranking.num_of_solved_program_problem }}</p>
         </div>
       </div>
@@ -78,6 +78,9 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
+    goToProfile(userId) {
+        this.$router.push({ path: `/profile`, query: { id: userId } });
+      },
     changeItemPerPage(){
         this.total_pages=0;
         this.changePage(1);
@@ -140,6 +143,17 @@ export default {
 .back-button:hover {
   background: #ddd;
 }
+p{
+  margin: 0px 0px;
+}
+.link{
+  padding: 10px 5px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.link:hover{
+  background-color: lightgray;
+}
 .rank-board-page {
   padding: 20px;
 }
@@ -161,14 +175,15 @@ export default {
 }
 
 .rank_data {
-  justify-content: left;
+  justify-content: center;
+  align-content: center;
 }
 
 .pagination {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 5px;
+  margin-top: 0px;
 }
 
 button {
