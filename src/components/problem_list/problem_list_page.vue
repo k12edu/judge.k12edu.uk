@@ -212,15 +212,15 @@
   display: flex;
   align-items: center;
   padding: 5px 10px;
-  border: 2px solid #ffd06b;
+  border: 2px solid lightblue;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s;
 }
 
 .tag-option:hover {
-  background-color: #ff9838;
-  border-color: #ff9838;
+  background-color: lightblue;
+  border-color: lightblue;
 }
 
 .checkbox-input {

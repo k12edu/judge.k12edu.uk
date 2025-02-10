@@ -9,12 +9,17 @@ import login_page from '@/components/login/login_page.vue'
 import problem_page from '@/components/problem_list/problem_page.vue'
 import chat_page from '@/components/message_board/chat_page.vue'
 import problem_article_page from '@/components/message_board/problem_article_page.vue'
-
+import history_page from '@/components/history/history_page.vue'
 const routes = [
   {
     path: '/',
     name: 'home',
     component: home_page
+  },
+  {
+    path: '/submission-history',
+    name: 'submission-history',
+    component: history_page
   },
   {
     path: '/announcement',

@@ -195,7 +195,7 @@ export default {
     // 提交代碼到後端
     async submitCode() {
       const codeContent = this.editor.state.doc.toString();  // 從編輯器取得代碼
-      console.log(codeContent);
+      // console.log(codeContent);
       let l=this.language;
       if(l=='python') l='py';
       const url = `${this.api_url}/judge/submit/`; // 替換為你的後端 API 路徑
@@ -222,6 +222,8 @@ export default {
 
         const data = await response.json();
         console.log('提交成功', data);
+        alert('提交成功');
+        this.$router.push({ path: `/submission-history`, });
         // 你可以在這裡處理後端回應
       } catch (err) {
         console.error('提交代碼時發生錯誤:', err);

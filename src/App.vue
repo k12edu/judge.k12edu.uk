@@ -38,6 +38,7 @@
         isLogIn : computed(() => this.isLogIn),
         access_token:computed(() => this.access_token),
         api_url:computed(() => this.api_url),
+        logout:this.logout
       }
     }, 
     mounted() {
@@ -63,6 +64,15 @@
       }
     },
     methods: {
+      logout(){
+      if(this.isLogIn==false) return;
+      localStorage.removeItem('jwt');
+      localStorage.removeItem('refresh');
+      this.access_token="";
+      this.isLogIn=false;
+      this.$router.push({ name: 'MainPage' });
+      window.location.reload(); 
+    },
       async checkAndRefreshToken() {
         let accessToken = localStorage.getItem("jwt");
         let refreshToken = localStorage.getItem("refres");
