@@ -17,7 +17,7 @@
     </div>
     <!-- 顯示多選標籤 -->
     <div class="tag-filter">
-      <label for="tags">選擇標籤:</label>
+      <label for="tags">選擇標籤:</label style="margin-botton: 20px;">
       <div class="tags">
         <label v-for="tag in tags" :key="tag" class="tag-option">
           <input
