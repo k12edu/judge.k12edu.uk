@@ -2,7 +2,7 @@
   <div class="profile-container">
     <div class="top-bar">
       <p class="back-button" @click="goBack">返回上一頁</p>
-      <p v-if="this.$route.query.id==0" class="logout-button" @click="handleLogout">登出</p>
+      <p v-if="this.$route.query.id==0 && isLogin" class="logout-button" @click="handleLogout">登出</p>
     </div>
 
     <h1>個人檔案</h1>
@@ -40,7 +40,7 @@
       </div>
     </div>
     <div v-if="this.$route.query.id==0" class="top-bar">
-      <p class="logout-button" @click="goToHistory">提交紀錄</p>
+      <p v-if="isLogin" class="logout-button" @click="goToHistory">提交紀錄</p>
     </div>
   </div>
 </template>
@@ -55,7 +55,7 @@ export default {
       error: null,       // 錯誤訊息
     };
   },
-  inject: ['api_url', 'access_token', 'logout'],
+  inject: ['api_url', 'access_token', 'logout', 'isLogin'],
   methods: {
     goBack() {
       this.$router.go(-1);

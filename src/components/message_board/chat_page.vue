@@ -21,12 +21,18 @@
     <div v-else>
       <div class="problem-list">
         <div v-if="article" class="problem-item">
+          <div v-if="article.is_own" class="delete-div" >
+            <p class="delete-button" @click="deleteArticle(this.article.id)">刪除文章</p>
+          </div>
           <div class="problem-number">作者: {{ article.author }}</div>
           <div class="problem-title">題目: {{ article.problem_title }}</div>
           <div class="problem-title">標題: {{ article.title }}</div>
           <div class="problem-content">{{ article.content }}</div>
         </div>
         <div v-for="comment in comments" :key="comment.id" class="problem-item">
+          <div v-if="comment.is_own" class="delete-div" >
+            <p class="delete-button" @click="deleteComment(comment.id)">刪除留言</p>
+          </div>
           <div class="problem-number">作者: {{ comment.author }}</div>
           <div class="problem-content">{{ comment.content }}</div>
         </div>
@@ -83,6 +89,46 @@ export default {
       },
     goBack() {
       this.$router.go(-1);
+    },
+    gotoArticleList(){
+      this.$router.push({ path: `/problem_article_list`, query: { problemId: this.article.problem_id } });
+    },
+    async deleteArticle(articleId) {
+      try {
+        const response = await fetch(`${this.api_url}/onlinejudge/article/${articleId}/delete/`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.access_token}`,
+          },
+        });
+        const res = await response.json();
+        console.log(res);
+        // this.fetchArticles();
+        alert('文章刪除成功');
+        this.gotoArticleList()
+      } catch (error) {
+        console.error('文章刪除失敗', error);
+        alert('文章刪除失敗');
+      }
+    },
+    async deleteComment(commentId) {
+      try {
+        const response = await fetch(`${this.api_url}/onlinejudge/comment/${commentId}/delete/`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.access_token}`,
+          },
+        });
+        const res = await response.json();
+        console.log(res);
+        alert('刪除成功');
+        this.fetchArticles()
+      } catch (error) {
+        console.error('留言刪除失敗', error);
+        alert('留言刪除失敗');
+      }
     },
     async submitComment() {
       if (!this.title || !this.content) {
@@ -168,7 +214,26 @@ export default {
   border-radius: 6px;
 }
 .back-button:hover {
-  background: #ddd;
+  background: #ccc;
+}
+.delete-div{
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  text-align: center;
+  padding: 0 0;
+}
+.delete-button {
+  font-size: small;
+  padding: 6px 6px;
+  margin: 0 20px;
+  background: #f0f0f0;
+  cursor: pointer;
+  border: 0px solid #cccccc00;
+  border-radius: 6px;
+}
+.delete-button:hover {
+  background: #ff2a2a;
 }
 
 .pagination {

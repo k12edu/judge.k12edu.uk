@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-  import { computed } from 'vue';
+  import { toRef } from 'vue';
   export default {
     data() {
       return {
@@ -35,11 +35,11 @@
     },
     provide(){
       return {
-        isLogIn : computed(() => this.isLogIn),
-        access_token:computed(() => this.access_token),
-        api_url:computed(() => this.api_url),
-        logout:this.logout
-      }
+        isLogin: toRef(this, 'isLogin'),
+        access_token: toRef(this, 'access_token'),
+        api_url: toRef(this, 'api_url'),
+        logout: this.logout
+  };
     }, 
     mounted() {
       const currentDomain = window.location.hostname;
@@ -58,6 +58,7 @@
       this.access_token = localStorage.getItem('jwt');
       if(this.checkAndRefreshToken()==false){
         this.isLogin=false;
+        
       }
       else{
         this.isLogin=true;
@@ -65,11 +66,11 @@
     },
     methods: {
       logout(){
-      if(this.isLogIn==false) return;
+      // if(this.isLogIn==false) return;
       localStorage.removeItem('jwt');
       localStorage.removeItem('refresh');
       this.access_token="";
-      this.isLogIn=false;
+      this.isLogin=false;
       window.location.reload(); 
       this.$router.push({ name: 'home' });
     },
