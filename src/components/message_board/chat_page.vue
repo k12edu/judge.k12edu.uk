@@ -47,7 +47,6 @@
 
     <div class="new-comment">
       <h2>新增留言</h2>
-      <input v-model="title" type="text" placeholder="輸入標題" class="input" />
       <textarea v-model="content" placeholder="輸入內容" class="textarea"></textarea>
       <button @click="submitComment" class="submit-btn">發布</button>
     </div>
@@ -64,7 +63,6 @@ export default {
       currentPage: 1,
       total_page: 0,
       per_page: 10,
-      title: '',
       content: ''
     };
   },
@@ -131,8 +129,8 @@ export default {
       }
     },
     async submitComment() {
-      if (!this.title || !this.content) {
-        alert('標題與內容不能為空');
+      if (!this.content) {
+        alert('內容不能為空');
         return;
       }
       try {

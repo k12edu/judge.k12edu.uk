@@ -71,7 +71,6 @@
       localStorage.removeItem('refresh');
       this.access_token="";
       this.isLogin=false;
-      window.location.reload(); 
       this.$router.push({ name: 'home' });
     },
       checkAndRefreshToken() {
