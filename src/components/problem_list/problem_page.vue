@@ -10,7 +10,7 @@
       <h2>題目敘述</h2>
       <div v-if="loading">載入中...</div>
       <div v-else-if="error" class="error-message">{{ error }}</div>
-      <div v-else class="description-content" v-html="description"></div>
+      <div v-else class="description-content">{{ description }}</div>
     </div>
     <div v-if="problem" class="v-container">
       <p>標籤: {{ getTag}}</p>
@@ -298,6 +298,8 @@ export default {
   white-space: pre-wrap; /* 保留換行與空白 */
   font-family: Arial, sans-serif;
   line-height: 1.6;
+  max-height: none;  /* 確保沒有高度限制 */
+  overflow: visible; /* 避免內容被截斷 */
 }
 .error-message {
   color: red;
