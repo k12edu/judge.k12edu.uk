@@ -56,6 +56,7 @@
       }
       this.loadGoogleScript();
       this.access_token = localStorage.getItem('jwt');
+      this.getTokenFromCookie();
       if(this.checkAndRefreshToken()==false){
         this.isLogin=false;
         
@@ -63,8 +64,32 @@
       else{
         this.isLogin=true;
       }
+      
     },
     methods: {
+      async getTokenFromCookie() {
+      
+      try {
+          const response = await fetch(`${this.api_url}/accounts/api/get_token_from_cookie/`, {
+              method: "GET",
+              credentials: "include",  // 確保請求攜帶 Cookie
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+              console.log("已登入:", data.token);
+              return data.token;
+          } else {
+              console.log("未登入:", data.message);
+              console.warn("未登入:", data.message);
+              return null;
+          }
+      } catch (error) {
+          console.error("請求失敗:", error);
+          return null;
+      }
+    },
       logout(){
       // if(this.isLogIn==false) return;
       localStorage.removeItem('jwt');
