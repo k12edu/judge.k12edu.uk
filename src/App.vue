@@ -55,8 +55,9 @@
         console.log('test2');
       }
       this.loadGoogleScript();
-      this.access_token = localStorage.getItem('jwt');
       this.getTokenFromCookie();
+      this.access_token = localStorage.getItem('jwt');
+      
       if(this.checkAndRefreshToken()==false){
         this.isLogin=false;
         
@@ -79,6 +80,7 @@
 
           if (response.ok) {
               console.log("已登入:", data.token);
+              localStorage.setItem("jwt", data.token);
               return data.token;
           } else {
               console.log("未登入:", data.message);
@@ -198,6 +200,7 @@
               if (data.access) {
                   this.access_token = data.access;
                   this.isLogin = true;
+                  document.cookie = `jwt=${data.access}; path=/; SameSite=Lax; max-age=3600; domain=.k12edu.us.kg`;
                   localStorage.setItem('jwt', data.access);
                   localStorage.setItem('refresh', data.refresh);
                   console.log('JWT token received and stored:', data);
