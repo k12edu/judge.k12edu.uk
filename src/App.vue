@@ -94,6 +94,7 @@
     },
       logout(){
       // if(this.isLogIn==false) return;
+      document.cookie = "token=; path=/; SameSite=Lax; domain=.k12edu.us.kg; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       localStorage.removeItem('jwt');
       localStorage.removeItem('refresh');
       this.access_token="";
