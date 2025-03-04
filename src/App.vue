@@ -55,7 +55,7 @@
         console.log('test2');
       }
       this.loadGoogleScript();
-      this.getTokenFromCookie();
+      if(this.isLogin==false) this.getTokenFromCookie();
       this.access_token = localStorage.getItem('jwt');
       
       if(this.checkAndRefreshToken()==false){
@@ -80,6 +80,7 @@
 
           if (response.ok) {
               console.log("已登入:", data.token);
+              this.isLogin=true;
               localStorage.setItem("jwt", data.token);
               window.location.reload()
               return data.token;
