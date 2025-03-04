@@ -81,6 +81,7 @@
           if (response.ok) {
               console.log("已登入:", data.token);
               localStorage.setItem("jwt", data.token);
+              window.location.reload()
               return data.token;
           } else {
               console.log("未登入:", data.message);
