@@ -200,7 +200,7 @@
               if (data.access) {
                   this.access_token = data.access;
                   this.isLogin = true;
-                  document.cookie = `jwt=${data.access}; path=/; SameSite=Lax; max-age=3600; domain=.k12edu.us.kg`;
+                  document.cookie = `token=${data.access}; path=/; SameSite=Lax; max-age=3600; domain=.k12edu.us.kg`;
                   localStorage.setItem('jwt', data.access);
                   localStorage.setItem('refresh', data.refresh);
                   console.log('JWT token received and stored:', data);
