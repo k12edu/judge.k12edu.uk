@@ -82,6 +82,7 @@
               console.log("已登入:", data.token);
               this.isLogin=true;
               localStorage.setItem("jwt", data.token);
+              window.location.reload(); 
               this.access_token = data.token;
               return data.token;
           } else {
