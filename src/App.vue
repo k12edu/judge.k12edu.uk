@@ -55,7 +55,7 @@
         console.log('test2');
       }
       this.loadGoogleScript();
-      if(this.isLogin==false) this.getTokenFromCookie();
+      if(localStorage.getItem("jwt")===null) this.getTokenFromCookie();
       this.access_token = localStorage.getItem('jwt');
       
       if(this.checkAndRefreshToken()==false){
