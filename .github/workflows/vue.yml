@@ -29,7 +29,7 @@ jobs:
         run: npm run build
 
       - name: Copy CNAME file
-        run: echo 'judge.k12edu.us.kg' > ./dist/CNAME
+        run: echo 'judge.k12edu.uk' > ./dist/CNAME
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4

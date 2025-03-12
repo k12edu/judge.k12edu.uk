@@ -50,8 +50,8 @@
         console.log('test1');
       }
       else{
-        this.api_url='https://api.k12edu.us.kg';
-        this.r_url='https://teacher.k12edu.us.kg/';
+        this.api_url='https://api.k12edu.uk';
+        this.r_url='https://teacher.k12edu.uk/';
         console.log('test2');
       }
       this.loadGoogleScript();
@@ -97,7 +97,7 @@
     },
       logout(){
       // if(this.isLogIn==false) return;
-      document.cookie = "token=; path=/; SameSite=Lax; domain=.k12edu.us.kg; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "token=; path=/; SameSite=Lax; domain=.k12edu.uk; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       localStorage.removeItem('jwt');
       localStorage.removeItem('refresh');
       this.access_token="";
@@ -204,7 +204,7 @@
               if (data.access) {
                   this.access_token = data.access;
                   this.isLogin = true;
-                  document.cookie = `token=${data.access}; path=/; SameSite=Lax; max-age=3600; domain=.k12edu.us.kg`;
+                  document.cookie = `token=${data.access}; path=/; SameSite=Lax; max-age=3600; domain=.k12edu.uk`;
                   localStorage.setItem('jwt', data.access);
                   localStorage.setItem('refresh', data.refresh);
                   console.log('JWT token received and stored:', data);
