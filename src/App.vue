@@ -27,7 +27,9 @@
     data() {
       return {
         isLogin: false,
-        googleClientId: '63473080805-na5r3r5d4m3ibnk1f7kvjgp7n1grnaoe.apps.googleusercontent.com', // 替換為你的 Google OAuth 客戶端 ID
+        googleClientId: '917774825923-ki9dogspvhie7m0pfblhsec1mfa5guvi.apps.googleusercontent.com', // 替換為你的 Google OAuth 客戶端 ID
+        // googleClientId: '63473080805-na5r3r5d4m3ibnk1f7kvjgp7n1grnaoe.apps.googleusercontent.com', // 替換為你的 Google OAuth 客戶端 ID
+        // 917774825923-ki9dogspvhie7m0pfblhsec1mfa5guvi.apps.googleusercontent.com
         access_token: '',
         api_url:"",
         r_url:""
