@@ -103,8 +103,9 @@ export default {
       } catch (err) {
         if(this.request_time<=2){
           this.request_time+=1;
-          this.fetchDescription();
           alert('retry');
+          this.fetchDescription();
+          
         }
         this.error = '無法取得題目敘述，請稍後再試';
         console.error(err);
