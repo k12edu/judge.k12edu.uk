@@ -44,6 +44,7 @@
   };
     }, 
     mounted() {
+      alert("???");
       const currentDomain = window.location.hostname;
       console.log(currentDomain);
       if(currentDomain=='localhost'){
