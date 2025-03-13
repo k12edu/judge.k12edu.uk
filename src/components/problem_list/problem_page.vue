@@ -114,8 +114,10 @@ export default {
     async retryFetchDescription() {
     // 等待 1 秒
     await new Promise(resolve => setTimeout(resolve, 1000));
+    this.getTokenFromCookie();
     // 重新呼叫 fetchDescription 嘗試請求
-    location.reload();
+    this.fetchDescription();
+    alert('bbb');
   },
     
 
