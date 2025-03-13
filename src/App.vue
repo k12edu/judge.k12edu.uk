@@ -45,7 +45,7 @@
   };
     }, 
     mounted() {
-      alert('hihihi23');
+      alert('hihihi234');
       const currentDomain = window.location.hostname;
       console.log(currentDomain);
       if(currentDomain=='localhost'){

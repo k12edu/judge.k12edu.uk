@@ -81,6 +81,7 @@ export default {
     },
     // 獲取題目敘述
     async fetchDescription() {
+      await new Promise(resolve => setTimeout(resolve, 1000));
       try {
           const defaultParams = {
             id: this.problemId,
