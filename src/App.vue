@@ -22,225 +22,136 @@
   </div>
 </template>
 <script>
-  import { toRef } from 'vue';
-  export default {
-    data() {
-      return {
-        isLogin: false,
-        googleClientId: '63473080805-na5r3r5d4m3ibnk1f7kvjgp7n1grnaoe.apps.googleusercontent.com', // 替換為你的 Google OAuth 客戶端 ID
-        access_token: '',
-        api_url:"",
-        r_url:""
-      };
-    },
-    provide(){
-      return {
-        isLogin: toRef(this, 'isLogin'),
-        access_token: toRef(this, 'access_token'),
-        api_url: toRef(this, 'api_url'),
-        logout: this.logout
-  };
-    }, 
-    mounted() {
-      const currentDomain = window.location.hostname;
-      console.log(currentDomain);
-      if(currentDomain=='localhost'){
-        this.api_url='http://127.0.0.1:60000';
-        this.r_url='http://localhost:8080/';
-        console.log('test1');
-      }
-      else{
-        this.api_url='https://api.k12edu.us.kg';
-        this.r_url='https://teacher.k12edu.us.kg/';
-        console.log('test2');
-      }
-      this.loadGoogleScript();
-      if(localStorage.getItem("jwt")===null) this.getTokenFromCookie();
-      this.access_token = localStorage.getItem('jwt');
-      
-      if(this.checkAndRefreshToken()==false){
-        this.isLogin=false;
-        
-      }
-      else{
-        this.isLogin=true;
-      }
-      
-    },
-    methods: {
-      async getTokenFromCookie() {
-      
+import { toRef } from "vue";
+
+export default {
+  data() {
+    return {
+      isLogin: false,
+      googleClientId:
+        "917774825923-ki9dogspvhie7m0pfblhsec1mfa5guvi.apps.googleusercontent.com",
+      access_token: "",
+      api_url: "",
+      r_url: "",
+    };
+  },
+  provide() {
+    return {
+      isLogin: toRef(this, "isLogin"),
+      access_token: toRef(this, "access_token"),
+      api_url: toRef(this, "api_url"),
+      logout: this.logout,
+    };
+  },
+  mounted() {
+    const currentDomain = window.location.hostname;
+    if (currentDomain === "localhost") {
+      this.api_url = "http://127.0.0.1:60000";
+      this.r_url = "http://localhost:8080/";
+    } else {
+      this.api_url = "https://api.k12edu.uk";
+      this.r_url = "https://teacher.k12edu.uk/";
+    }
+
+    this.loadGoogleScript();
+    this.getTokenFromCookie();
+  },
+  methods: {
+    async getTokenFromCookie() {
       try {
-          const response = await fetch(`${this.api_url}/accounts/api/get_token_from_cookie/`, {
-              method: "GET",
-              credentials: "include",  // 確保請求攜帶 Cookie
-          });
-
-          const data = await response.json();
-
-          if (response.ok) {
-              console.log("已登入:", data.token);
-              this.isLogin=true;
-              localStorage.setItem("jwt", data.token);
-              window.location.reload(); 
-              this.access_token = data.token;
-              return data.token;
-          } else {
-              console.log("未登入:", data.message);
-              console.warn("未登入:", data.message);
-              return null;
-          }
-      } catch (error) {
-          console.error("請求失敗:", error);
-          return null;
-      }
-    },
-      logout(){
-      // if(this.isLogIn==false) return;
-      document.cookie = "token=; path=/; SameSite=Lax; domain=.k12edu.us.kg; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-      localStorage.removeItem('jwt');
-      localStorage.removeItem('refresh');
-      this.access_token="";
-      this.isLogin=false;
-      this.$router.push({ name: 'home' });
-    },
-      checkAndRefreshToken() {
-        let accessToken = localStorage.getItem("jwt");
-        let refreshToken = localStorage.getItem("refres");
-
-        if (!accessToken) {
-            console.log("沒有 accessToken，請重新登入");
-            return false;
-        }
-
-        // 檢查 accessToken 是否過期
-        if (this.isTokenExpired(accessToken)) {
-            console.log("Access token 過期，嘗試使用 refresh token 取得新 token...");
-            return this.refreshAccessToken(refreshToken);
-        }
-
-        console.log("Access token 仍有效");
-        return true;
-    },
-
-    // 檢查 JWT 是否過期
-      isTokenExpired(token) {
-        try {
-            const payload = JSON.parse(atob(token.split(".")[1])); // 解析 JWT payload
-            return payload.exp * 1000 < Date.now(); // 檢查是否過期
-        } catch (error) {
-            return true; // 若 JWT 解析失敗，視為過期
-        }
-    },
-      async refreshAccessToken(refreshToken) {
-        try {
-            const response = await fetch(`${this.api_url}/api/token/refresh/`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ refresh: refreshToken })
-            });
-
-            if (!response.ok) throw new Error("Refresh token 無效");
-
-            const data = await response.json();
-            localStorage.setItem("jwt", data.access);
-            console.log("成功刷新 accessToken");
-            return true;
-        } catch (error) {
-            console.log("Refresh token 失敗，請重新登入", error);
-            localStorage.removeItem("jwt");
-            localStorage.removeItem("refresh");
-            return false;
-        }
-    },
-      // 動態加載 Google API 客戶端腳本
-      loadGoogleScript() {
-        const script = document.createElement('script');
-        script.src = 'https://accounts.google.com/gsi/client';
-        script.async = true;
-        script.defer = true;
-        script.onload = this.initializeGoogleSignIn; // 當腳本加載完成時初始化
-        document.head.appendChild(script);
-      },
-      // 初始化 Google Sign-In
-      initializeGoogleSignIn() {
-        // 使用 window.google 確保全域變數
-        if (typeof window.google === 'undefined') {
-          console.error('Google API 未正確加載');
-          return;
-        }
-
-        window.google.accounts.id.initialize({
-          client_id: this.googleClientId,
-          scope: 'openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-          callback: this.handleCredentialResponse, // 當用戶成功登入時的回調函數
-        });
-        window.google.accounts.id.renderButton(
-          document.getElementById('google-signin-button'), // 指定渲染按鈕的位置
+        const response = await fetch(
+          `${this.api_url}/accounts/api/get_token_from_cookie/`,
           {
-            theme: 'outline', // 按鈕樣式，可選 "filled_blue" 或 "outline"
-            size: 'large',    // 按鈕大小，可選 "small", "medium", "large"
+            method: "GET",
+            credentials: "include", // 確保請求攜帶 Cookie
           }
         );
-      },
-      // 處理登入回應
-      handleCredentialResponse(response) {
-        console.log('Google Sign-In Credential Response:', response);
-        // 解析 JWT 資料（如需要）
-        const token = response.credential;
-        this.sendIdTokenToBackend(token);
-      },
-      sendIdTokenToBackend(idToken) {
-          fetch(`${this.api_url}/accounts/api/google-login2/`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ id_token: idToken }), // 修改成傳 id_token
-          })
-          .then(response => response.json())
-          .then(data => {
-              // 處理 Django 回傳的 JWT
-              if (data.access) {
-                  this.access_token = data.access;
-                  this.isLogin = true;
-                  document.cookie = `token=${data.access}; path=/; SameSite=Lax; max-age=3600; domain=.k12edu.us.kg`;
-                  localStorage.setItem('jwt', data.access);
-                  localStorage.setItem('refresh', data.refresh);
-                  console.log('JWT token received and stored:', data);
-              } else {
-                  console.error('JWT not received:', data);
-              }
-              window.location.reload(); 
-          })
-          .catch(error => console.error('Error sending id_token to backend:', error));
-      },
+
+        const data = await response.json();
+
+        if (response.ok) {
+          console.log("已登入:", data.token);
+          this.isLogin = true;
+          this.access_token = data.token;
+        } else {
+          console.warn("未登入:", data.message);
+        }
+      } catch (error) {
+        console.error("請求失敗:", error);
+      }
     },
-  };
 
+    logout() {
+      document.cookie =
+        "token=; path=/; SameSite=Lax; domain=.k12edu.uk; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      this.access_token = "";
+      this.isLogin = false;
+      this.$router.push({ name: "home" });
+    },
 
+    loadGoogleScript() {
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      script.onload = this.initializeGoogleSignIn;
+      document.head.appendChild(script);
+    },
 
+    initializeGoogleSignIn() {
+      if (typeof window.google === "undefined") {
+        console.error("Google API 未正確加載");
+        return;
+      }
+
+      window.google.accounts.id.initialize({
+        client_id: this.googleClientId,
+        scope:
+          "openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
+        callback: this.handleCredentialResponse,
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById("google-signin-button"),
+        {
+          theme: "outline",
+          size: "large",
+        }
+      );
+    },
+
+    handleCredentialResponse(response) {
+      console.log("Google Sign-In Credential Response:", response);
+      const token = response.credential;
+      this.sendIdTokenToBackend(token);
+    },
+
+    sendIdTokenToBackend(idToken) {
+      fetch(`${this.api_url}/accounts/api/google-login2/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id_token: idToken }),
+        credentials: "include", // 確保回傳的 JWT 存入 Cookie
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.access) {
+            console.log("JWT token received and stored in cookie:", data);
+            this.isLogin = true;
+            this.getTokenFromCookie();
+          } else {
+            console.error("JWT not received:", data);
+          }
+        })
+        .catch((error) =>
+          console.error("Error sending id_token to backend:", error)
+        );
+    },
+  },
+};
 </script>
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-.v-container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-.h-comtainer{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-</style>
 
 <style scoped>
   .menu-container {
