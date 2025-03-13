@@ -46,6 +46,7 @@ export default {
   name: 'CodeEditor',
   data() {
     return {
+      request_time:0,
       problem:null,
       description: '', // 題目敘述內容
       loading: true,   // 載入狀態
@@ -100,6 +101,10 @@ export default {
         this.problem=data.problem;
         this.description = data.problem.problem_description || '無法取得題目內容';
       } catch (err) {
+        if(this.request_time<=2){
+          this.request_time+=1;
+          this.fetchDescription();
+        }
         this.error = '無法取得題目敘述，請稍後再試';
         console.error(err);
       } finally {
