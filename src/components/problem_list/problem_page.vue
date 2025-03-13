@@ -102,10 +102,6 @@ export default {
         this.description = data.problem.problem_description || '無法取得題目內容';
       } catch (err) {
         this.error = '無法取得題目敘述，請稍後再試';
-        if(this.request_time<=2){
-          this.request_time+=1;
-          this.retryFetchDescription();
-        }
         console.error(err);
       } finally {
         this.loading = false;
@@ -116,8 +112,6 @@ export default {
     await new Promise(resolve => setTimeout(resolve, 1000));
     this.getTokenFromCookie();
     // 重新呼叫 fetchDescription 嘗試請求
-    alert('bbbw');
-    alert(this.access_token);
     this.fetchDescription();
   },
     
@@ -245,6 +239,7 @@ export default {
   },
 
   mounted() {
+    alert(this.access_token);
     console.log(this.$route.query.problemId);
     this.fetchDescription(); // 組件掛載時請求資料
     this.initializeEditor(); // 初始化編輯器
