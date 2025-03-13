@@ -116,8 +116,8 @@ export default {
     await new Promise(resolve => setTimeout(resolve, 1000));
     this.getTokenFromCookie();
     // 重新呼叫 fetchDescription 嘗試請求
+    alert(this.access_token);
     this.fetchDescription();
-    alert('bbb');
   },
     
 
