@@ -58,7 +58,6 @@
       }
       this.loadGoogleScript();
       if(localStorage.getItem("jwt")===null) this.getTokenFromCookie();
-      this.access_token = localStorage.getItem('jwt');
       
       if(this.checkAndRefreshToken()==false){
         this.isLogin=false;
@@ -97,7 +96,7 @@
 
     logout() {
       document.cookie =
-        "token=; path=/; SameSite=Lax; domain=.k12edu.uk; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        "access=; path=/; SameSite=Lax; domain=.k12edu.uk; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       this.access_token = "";
       this.isLogin = false;
       this.$router.push({ name: "home" });
