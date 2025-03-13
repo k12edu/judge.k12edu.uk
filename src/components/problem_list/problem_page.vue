@@ -103,7 +103,6 @@ export default {
       } catch (err) {
         if(this.request_time<=2){
           this.request_time+=1;
-          alert('retry');
           this.fetchDescription();
           
         }
