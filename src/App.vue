@@ -41,11 +41,11 @@
         access_token: toRef(this, 'access_token'),
         api_url: toRef(this, 'api_url'),
         logout: this.logout,
-        getTokenFromCookie: this.getTokenFromCookie()
+        getTokenFromCookie: this.getTokenFromCookie
   };
     }, 
     mounted() {
-      alert('hihihi2');
+      alert('hihihi23');
       const currentDomain = window.location.hostname;
       console.log(currentDomain);
       if(currentDomain=='localhost'){
