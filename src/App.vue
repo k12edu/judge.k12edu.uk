@@ -95,12 +95,21 @@
     },
 
     logout() {
-      document.cookie = "access=; path=/; domain=api.k12edu.uk; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    // 刪除 cookie
+    document.cookie = "access=; path=/; domain=api.k12edu.uk; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    
+    // 顯示當前的 cookies
+    console.log("Current cookies:", document.cookie);
+    alert("Cookies after logout: " + document.cookie);  // 用 alert 彈出當前的 cookies
+    
+    // 清空 local state 或 session
+    this.access_token = "";
+    this.isLogin = false;
 
-      this.access_token = "";
-      this.isLogin = false;
-      this.$router.push({ name: "home" });
-    },
+    // 跳轉到首頁
+    this.$router.push({ name: "home" });
+  },
+
 
     loadGoogleScript() {
       const script = document.createElement("script");
