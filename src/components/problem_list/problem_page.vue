@@ -239,7 +239,7 @@ export default {
   },
 
   mounted() {
-    alert(this.access_token);
+    this.getTokenFromCookie();
     console.log(this.$route.query.problemId);
     this.fetchDescription(); // 組件掛載時請求資料
     this.initializeEditor(); // 初始化編輯器
