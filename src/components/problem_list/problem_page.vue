@@ -101,18 +101,24 @@ export default {
         this.problem=data.problem;
         this.description = data.problem.problem_description || '無法取得題目內容';
       } catch (err) {
+        this.error = '無法取得題目敘述，請稍後再試';
         if(this.request_time<=2){
           this.request_time+=1;
-          this.fetchDescription();
-          
+          this.retryFetchDescription();
         }
-        this.error = '無法取得題目敘述，請稍後再試';
         console.error(err);
       } finally {
         this.loading = false;
       }
     },
+    async retryFetchDescription() {
+    // 等待 1 秒
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
+    // 重新呼叫 fetchDescription 嘗試請求
+    this.fetchDescription();
+    alert('rrr');
+  },
     
 
     initializeEditor() {
@@ -238,7 +244,6 @@ export default {
   },
 
   mounted() {
-    alert('retry');
     console.log(this.$route.query.problemId);
     this.fetchDescription(); // 組件掛載時請求資料
     this.initializeEditor(); // 初始化編輯器
