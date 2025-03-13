@@ -71,7 +71,7 @@ export default {
       return res;
     }
   },
-  inject: ['api_url', 'access_token'],
+  inject: ['api_url', 'access_token','getTokenFromCookie'],
   methods: {
     goBack() {
       this.$router.go(-1);
@@ -114,10 +114,10 @@ export default {
     async retryFetchDescription() {
     // 等待 1 秒
     await new Promise(resolve => setTimeout(resolve, 1000));
-
+    this.getTokenFromCookie();
     // 重新呼叫 fetchDescription 嘗試請求
     this.fetchDescription();
-    alert('rrr');
+    alert('bbb');
   },
     
 
@@ -247,6 +247,7 @@ export default {
     console.log(this.$route.query.problemId);
     this.fetchDescription(); // 組件掛載時請求資料
     this.initializeEditor(); // 初始化編輯器
+    this.getTokenFromCookie();
   },
 };
 </script>

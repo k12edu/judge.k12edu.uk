@@ -40,7 +40,8 @@
         isLogin: toRef(this, 'isLogin'),
         access_token: toRef(this, 'access_token'),
         api_url: toRef(this, 'api_url'),
-        logout: this.logout
+        logout: this.logout,
+        getTokenFromCookie: this.getTokenFromCookie()
   };
     }, 
     mounted() {
