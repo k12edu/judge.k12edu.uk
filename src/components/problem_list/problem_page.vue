@@ -239,6 +239,7 @@ export default {
   },
 
   mounted() {
+    alert('retry');
     console.log(this.$route.query.problemId);
     this.fetchDescription(); // 組件掛載時請求資料
     this.initializeEditor(); // 初始化編輯器
