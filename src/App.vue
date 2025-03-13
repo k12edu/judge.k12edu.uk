@@ -22,42 +22,56 @@
   </div>
 </template>
 <script>
-import { toRef } from "vue";
-
-export default {
-  data() {
-    return {
-      isLogin: false,
-      googleClientId:
-        "917774825923-ki9dogspvhie7m0pfblhsec1mfa5guvi.apps.googleusercontent.com",
-      access_token: "",
-      api_url: "",
-      r_url: "",
-    };
-  },
-  provide() {
-    return {
-      isLogin: toRef(this, "isLogin"),
-      access_token: toRef(this, "access_token"),
-      api_url: toRef(this, "api_url"),
-      logout: this.logout,
-    };
-  },
-  mounted() {
-    const currentDomain = window.location.hostname;
-    if (currentDomain === "localhost") {
-      this.api_url = "http://127.0.0.1:60000";
-      this.r_url = "http://localhost:8080/";
-    } else {
-      this.api_url = "https://api.k12edu.uk";
-      this.r_url = "https://teacher.k12edu.uk/";
-    }
-
-    this.loadGoogleScript();
-    this.getTokenFromCookie();
-  },
-  methods: {
-    async getTokenFromCookie() {
+  import { toRef } from 'vue';
+  export default {
+    data() {
+      return {
+        isLogin: false,
+        googleClientId: '917774825923-ki9dogspvhie7m0pfblhsec1mfa5guvi.apps.googleusercontent.com', // 替換為你的 Google OAuth 客戶端 ID
+        // googleClientId: '63473080805-na5r3r5d4m3ibnk1f7kvjgp7n1grnaoe.apps.googleusercontent.com', // 替換為你的 Google OAuth 客戶端 ID
+        // 917774825923-ki9dogspvhie7m0pfblhsec1mfa5guvi.apps.googleusercontent.com
+        access_token: '',
+        api_url:"",
+        r_url:""
+      };
+    },
+    provide(){
+      return {
+        isLogin: toRef(this, 'isLogin'),
+        access_token: toRef(this, 'access_token'),
+        api_url: toRef(this, 'api_url'),
+        logout: this.logout
+  };
+    }, 
+    mounted() {
+      const currentDomain = window.location.hostname;
+      console.log(currentDomain);
+      if(currentDomain=='localhost'){
+        this.api_url='http://127.0.0.1:60000';
+        this.r_url='http://localhost:8080/';
+        console.log('test1');
+      }
+      else{
+        this.api_url='https://api.k12edu.uk';
+        this.r_url='https://teacher.k12edu.uk/';
+        console.log('test2');
+      }
+      this.loadGoogleScript();
+      if(localStorage.getItem("jwt")===null) this.getTokenFromCookie();
+      this.access_token = localStorage.getItem('jwt');
+      
+      if(this.checkAndRefreshToken()==false){
+        this.isLogin=false;
+        
+      }
+      else{
+        this.isLogin=true;
+      }
+      
+    },
+    methods: {
+      async getTokenFromCookie() {
+      
       try {
         const response = await fetch(
           `${this.api_url}/accounts/api/get_token_from_cookie/`,
