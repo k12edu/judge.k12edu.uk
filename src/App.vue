@@ -95,7 +95,7 @@
     },
 
     logout() {
-      document.cookie = "access=; path=/; domain=.k12edu.uk; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "access=; path=/; domain=api.k12edu.uk; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 
       this.access_token = "";
       this.isLogin = false;
