@@ -44,7 +44,6 @@
   };
     }, 
     mounted() {
-      alert("???");
       const currentDomain = window.location.hostname;
       console.log(currentDomain);
       if(currentDomain=='localhost'){
@@ -101,8 +100,6 @@
     
     // 顯示當前的 cookies
     console.log("Current cookies:", document.cookie);
-    console.log("All cookies:", document.cookie);
-    alert("Cookies after logout: " + document.cookie);  // 用 alert 彈出當前的 cookies
     
     // 清空 local state 或 session
     this.access_token = "";
