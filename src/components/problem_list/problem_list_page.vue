@@ -34,8 +34,7 @@
 
     <!-- 顯示題目列表 -->
     <div v-if="loading" class="loading">載入中...</div>
-    <div v-else>
-      <div class="p-list">
+    <div v-else class="p-list">
         <div class="problem-grid">
           <div v-for="problem in problems" :key="problem.problem_id" class="problem-item" @click="goToProblem(problem.problem_id)">
             <div class="problem-number">#{{ problem.problem_id }}</div>
@@ -48,7 +47,6 @@
             </div>
           </div>
         </div>
-      </div>
     </div>
 
     <!-- 分頁 -->
