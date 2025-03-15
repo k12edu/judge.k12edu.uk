@@ -148,6 +148,10 @@ export default {
 .back-button:hover {
   background: #ddd;
 }
+button.active {
+  font-weight: 700;
+  border-image-source: url('@/assets/tile_0003.png');
+}
 p{
   margin: 0px 0px;
 }

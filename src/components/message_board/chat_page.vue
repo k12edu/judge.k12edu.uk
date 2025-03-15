@@ -283,6 +283,10 @@ button {
 button:hover {
   background-color: #ddd;
 }
+button.active {
+  font-weight: 700;
+  border-image-source: url('@/assets/tile_0003.png');
+}
 .new-comment {
   max-width: 600px;
   margin: 20px auto;

@@ -108,8 +108,13 @@ export default {
   background-color: #f5f5f5;
   border-radius: 8px;
   width: 60%;
-  margin: 0 auto;
+  margin: 20px auto;
   min-height: 100vh;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 
 .top-bar {

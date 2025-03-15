@@ -35,15 +35,17 @@
     <!-- 顯示題目列表 -->
     <div v-if="loading" class="loading">載入中...</div>
     <div v-else>
-      <div class="problem-grid">
-        <div v-for="problem in problems" :key="problem.problem_id" class="problem-item" @click="goToProblem(problem.problem_id)">
-          <div class="problem-number">#{{ problem.problem_id }}</div>
-          <div class="problem-title">{{ problem.title }}</div>
-          <div class="problem-difficulty">{{ problem.difficulty }}</div>
-          <div class="problem-status">
-            <span :class="{'completed': problem.is_solved, 'not-completed': !problem.is_solved}">
-              {{ problem.is_solved ? '已完成' : '未完成' }}
-            </span>
+      <div class="p-list">
+        <div class="problem-grid">
+          <div v-for="problem in problems" :key="problem.problem_id" class="problem-item" @click="goToProblem(problem.problem_id)">
+            <div class="problem-number">#{{ problem.problem_id }}</div>
+            <div class="problem-title">{{ problem.title }}</div>
+            <div class="problem-difficulty">{{ problem.difficulty }}</div>
+            <div class="problem-status">
+              <span :class="{'completed': problem.is_solved, 'not-completed': !problem.is_solved}">
+                {{ problem.is_solved ? '已完成' : '未完成' }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -240,7 +242,11 @@
   font-weight: bold;
   color: #333;
 }
-
+.p-list{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 .problem-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -324,6 +330,10 @@ button {
 
 button:hover {
   background-color: #ddd;
+}
+button.active {
+  font-weight: 700;
+  border-image-source: url('@/assets/tile_0003.png');
 }
 .items-per-page {
   margin-top: 20px;

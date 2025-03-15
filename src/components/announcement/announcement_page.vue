@@ -198,7 +198,14 @@ export default {
   gap: 10px;
   margin-top: 20px;
 }
-
+.btn{
+  border-image-source: url('@/assets/tile_0002.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
+  color: white;
+}
 button {
   padding: 10px 20px;
   border: none;

@@ -339,6 +339,10 @@ button {
 button:hover {
   background-color: #ddd;
 }
+button.active {
+  font-weight: 700;
+  border-image-source: url('@/assets/tile_0003.png');
+}
 .items-per-page {
   margin-top: 20px;
   margin-bottom: 20px;
