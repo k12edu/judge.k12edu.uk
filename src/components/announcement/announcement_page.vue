@@ -212,8 +212,7 @@ button:hover {
 }
 
 button.active {
-  background-color: #007bff;
-  color: white;
+  font-weight: 700;
 }
 
 .items-per-page {
