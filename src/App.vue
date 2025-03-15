@@ -1,6 +1,6 @@
 <template>
   <div class="v-container" style="max-width: 100vw;">
-    <div class="menu-container" style="height: 70px;">
+    <div class="menu-container" style="height: 100px;">
       <router-link style="width: 120px;" to="/" class="menu-item">OnlineJudge</router-link>
       <nav class="menu">
         <router-link to="/announcement" class="menu-item">公告</router-link>
@@ -181,6 +181,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: rgb(206, 167, 117);
 }
 .v-container{
   display: flex;
@@ -207,6 +208,10 @@
     box-sizing: border-box; /* 包含內邊距 */
     flex-wrap: nowrap; /* 確保內容不換行 */
     overflow: hidden; /* 避免溢出 */
+    border-image-source: url('@/assets/tile_0001.png');
+    border-width: 8px;
+    border-style: solid;
+    border-image-slice: 5 fill; 
   }
 
 
@@ -220,22 +225,31 @@
   .menu-item {
     text-decoration: none; /* 移除超連結預設的下劃線 */
     padding: 10px 20px;
-    border: 2px solid lightblue;
-    border-radius: 5px;
+    /* border: 2px solid lightblue;
+    border-radius: 5px; */
     color: #000000;
     font-weight: bold;
-    background-color: white;
-    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    /* background-color: white;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s; */
     text-align: center;
     user-select: none; 
     cursor: pointer;
     white-space: nowrap; /* 避免文字換行 */
+    border-image-source: url('@/assets/tile_0002.png');
+    border-width: 8px;
+    border-style: solid;
+    border-image-slice: 5 fill; 
+    /* border-image-repeat: repeat;   */
   }
 
   .menu-item:hover {
-    background-color: lightblue;
-    color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* background-color: lightblue;
+    color: white; */
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    border-image-source: url('@/assets/tile_0003.png');
+    color: rgb(209, 209, 209);
+    /* border-image-slice: 5;  */
+    
   }
 
   .menu-item:active {
