@@ -253,10 +253,11 @@
   font-weight: bold;
   color: #333;
 }
-.p-list{
+.p-list {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* 允許自動換行 */
+  gap: 10px; /* 設定間距 */
+  justify-content: center; /* 讓題目居中對齊 */
 }
 .problem-grid {
   display: grid;
@@ -270,8 +271,11 @@
   border-image-repeat: repeat;
 }
 
+
 .problem-item {
-  border: 1px solid #ccc;
+  width: calc(25% - 20px); /* 設定固定寬度 (這裡假設 4 列) */
+  min-width: 200px; /* 設定最小寬度，確保不會過小 */
+  flex-grow: 1; /* 允許伸縮 */
   padding: 15px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);

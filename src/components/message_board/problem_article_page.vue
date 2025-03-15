@@ -269,6 +269,11 @@ border-radius: 5px;
 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 cursor: pointer;
 transition: transform 0.3s, box-shadow 0.3s;
+border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 
 .problem-item:hover {

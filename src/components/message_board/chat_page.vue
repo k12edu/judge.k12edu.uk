@@ -321,7 +321,7 @@ button.active {
 }
 
 .problem-list-container {
-  padding: 20px;
+  padding: 0px 20px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

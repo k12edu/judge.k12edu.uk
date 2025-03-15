@@ -165,6 +165,11 @@ p{
 }
 .rank-board-page {
   padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
 }
 
 .rank-grid {
