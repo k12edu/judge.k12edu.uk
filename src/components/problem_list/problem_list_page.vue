@@ -259,10 +259,11 @@
   flex-wrap: wrap; /* 允許自動換行 */
   gap: 10px; /* 設定間距 */
   justify-content: center; /* 讓題目居中對齊 */
+  width: 70%;
 }
 .problem-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  /* display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); */
   gap: 20px;
   margin-top: 20px;
   border-image-source: url('@/assets/tile_0000.png');
