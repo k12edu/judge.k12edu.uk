@@ -214,6 +214,7 @@ button:hover {
 
 button.active {
   font-weight: 700;
+  border-image-source: url('@/assets/tile_0003.png');
 }
 
 .items-per-page {
