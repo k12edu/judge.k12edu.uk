@@ -124,6 +124,11 @@ export default {
   cursor: pointer;
   border-radius: 6px;
   transition: background 0.3s;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 
 .back-button:hover, .logout-button:hover {

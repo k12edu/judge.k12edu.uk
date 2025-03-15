@@ -197,6 +197,24 @@ export default {
 </script>
 
 <style scoped>
+.items-per-page {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
+}
+
+.items-per-page input {
+  padding: 5px 10px;
+  font-size: 16px;
+  width: 100px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 .back-div{
   display: flex;
   width: 100%;
@@ -210,6 +228,11 @@ export default {
   cursor: pointer;
   border: 0px solid #ccc;
   border-radius: 6px;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 .back-button:hover {
   background: #ccc;
@@ -286,8 +309,11 @@ color: white;
 
 .problem-list-container {
   padding: 20px;
-  width: 80%;
-  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
 }
 
 .problem-list {

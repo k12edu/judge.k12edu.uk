@@ -118,6 +118,15 @@
   </script>
   
   <style scoped>
+  .items-per-page {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-image-source: url('@/assets/tile_0000.png');
+    border-width: 10px;
+    border-style: solid;
+    border-image-slice: 6 fill;
+    border-image-repeat: repeat;
+  }
   .problem-list-container {
     padding: 20px;
     width: 80%;
@@ -167,6 +176,11 @@
     background: #f0f0f0;
     cursor: pointer;
     border-radius: 6px;
+    border-image-source: url('@/assets/tile_0000.png');
+    border-width: 10px;
+    border-style: solid;
+    border-image-slice: 6 fill;
+    border-image-repeat: repeat;
   }
   
   .back-button:hover {

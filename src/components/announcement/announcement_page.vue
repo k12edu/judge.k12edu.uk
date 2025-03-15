@@ -1,9 +1,9 @@
 <template>
   <div class="announcement-page">
-    <h1>公告</h1>
     <div class="back-div" >
       <p class="back-button" @click="goBack">返回上一頁</p>
     </div>
+    <h1>公告</h1>
     <div class="items-per-page">
       <label for="perPage">每頁顯示數量:</label>
       <input
@@ -12,7 +12,7 @@
         v-model="pageSize"
         min="1"
         @input="changeItemPerPage"
-        placeholder="輸入每頁顯示的資料筆數"
+        placeholder="輸入數字"
       />
     </div>
     <div v-if="announcements.length" class="announcement-list">
@@ -25,7 +25,7 @@
       <p>目前沒有公告</p>
     </div>
     <div class="pagination">
-      <button @click="changePage(page)" :class="{ active: currentPage === page }" v-for="page in displayedPages" :key="page">
+      <button @click="changePage(page)" class="btn" :class="{ active: currentPage === page }" v-for="page in displayedPages" :key="page">
         {{ page }}
       </button>
     </div>
@@ -117,6 +117,13 @@ export default {
   justify-content: left;
   padding: 10px 20px;
 }
+.btn{
+  border-image-source: url('@/assets/tile_0039.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
+}
 .back-button {
   width: 100px;
   background: #f0f0f0;
@@ -124,6 +131,11 @@ export default {
   cursor: pointer;
   border: 0px solid #ccc;
   border-radius: 6px;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 .back-button:hover {
   background: #ddd;
@@ -145,13 +157,18 @@ export default {
 }
 
 .announcement-card {
-  background: #f9f9f9;
+  /* background: #f9f9f9; */
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
   min-height: 200px;
   text-align: left;
+  border-image-source: url('@/assets/tile_0001.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 
 .announcement-card:hover {
@@ -161,12 +178,12 @@ export default {
 .announcement-card h3 {
   margin: 0 0 10px 0;
   font-size: 1.5rem;
-  color: #333;
+  color: #dfdfdf;
 }
 
 .announcement-card p {
   margin: 0;
-  color: #555;
+  color: #dfdfdf;
 }
 
 .no-announcements {
@@ -202,6 +219,11 @@ button.active {
 .items-per-page {
   margin-top: 20px;
   margin-bottom: 20px;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 
 .items-per-page input {
