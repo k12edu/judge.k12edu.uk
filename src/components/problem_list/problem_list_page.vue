@@ -253,10 +253,8 @@
 }
 .p-list {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap; /* 允許自動換行 */
-  gap: 10px; /* 設定間距 */
-  justify-content: center; /* 讓題目居中對齊 */
+  flex-direction: column;
+  align-items: center;
   width: 70%;
 }
 .problem-grid {
