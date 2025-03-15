@@ -142,12 +142,18 @@
       align-items: center;
     width: 100%;
     max-width: 800px;
-    background-color: #f9f9f9;
     padding: 20px;
     margin-bottom: 40px;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: rgb(206, 167, 117);
+    border-image-source: url('@/assets/tile_0000.png');
+    border-width: 10px;
+    border-style: solid;
+    border-image-slice: 6 fill;
+    border-image-repeat: repeat;
+
     }
 
     .announcement-section h2 {
@@ -159,11 +165,16 @@
     width: 100%;
     max-width: 800px;
     text-align: center;
-    background-color: #f0f8ff;
+    background-color: rgb(206, 167, 117);
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-image-source: url('@/assets/tile_0000.png');
+    border-width: 10px;
+    border-style: solid;
+    border-image-slice: 6 fill;
+    border-image-repeat: repeat;
     }
 
     .site-intro-section h3 {
@@ -185,21 +196,24 @@
     }
 
     .feature {
-    background-color: #fff;
-    border: 1px solid #ddd;
     border-radius: 8px;
     padding: 15px;
     width: 240px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-image-source: url('@/assets/tile_0002.png');
+    border-width: 10px;
+    border-style: solid;
+    border-image-slice: 6 fill;
+    border-image-repeat: repeat;
     }
 
     .feature h4 {
     margin-bottom: 10px;
-    color: #1e90ff;
+    color: #444444;
     }
 
     .feature p {
-    color: #666;
+    color: #444444;
     font-size: 14px;
     line-height: 1.5;
     }
