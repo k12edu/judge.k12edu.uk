@@ -33,7 +33,7 @@
       <p>目前沒有排名資料。</p>
     </div>
     <div class="pagination">
-      <button @click="changePage(page)" :class="{ active: currentPage === page }" v-for="page in displayedPages" :key="page">
+      <button @click="changePage(page)" class="btn" :class="{ active: currentPage === page }" v-for="page in displayedPages" :key="page">
         {{ page }}
       </button>
     </div>
@@ -191,16 +191,25 @@ p{
   margin-top: 0px;
 }
 
+.btn{
+  border-image-source: url('@/assets/tile_0002.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
+  color: white;
+}
 button {
   padding: 10px 20px;
-  border: 1px solid #ddd;
-  background-color: white;
+  border: none;
+  background-color: #eee;
   cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
 }
 
-button.active {
-  background-color: #007bff;
-  color: white;
+button:hover {
+  background-color: #ddd;
 }
 
 .items-per-page {
