@@ -173,6 +173,7 @@ p{
 }
 
 .rank-grid {
+  padding: 10px 10px;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr; /* 三個欄位 */
   gap: 10px;
@@ -227,6 +228,7 @@ button:hover {
 }
 
 .items-per-page {
+  width: auto;
   margin-top: 20px;
   margin-bottom: 20px;
   border-image-source: url('@/assets/tile_0000.png');

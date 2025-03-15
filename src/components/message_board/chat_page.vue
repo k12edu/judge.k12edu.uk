@@ -332,7 +332,6 @@ button.active {
 .problem-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   width: 100%;
 }
 
