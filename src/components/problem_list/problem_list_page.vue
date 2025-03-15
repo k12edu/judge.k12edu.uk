@@ -260,6 +260,7 @@
 .problem-grid {
   /* display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); */
+  width: 100%;
   gap: 20px;
   margin-top: 20px;
   border-image-source: url('@/assets/tile_0000.png');
@@ -274,7 +275,6 @@
   width: calc(25% - 20px); /* 設定固定寬度 (這裡假設 4 列) */
   min-width: 200px; /* 設定最小寬度，確保不會過小 */
   flex-grow: 1; /* 允許伸縮 */
-  padding: 15px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   cursor: pointer;
