@@ -106,6 +106,11 @@
       min-height: 200px;
       text-align: left;
       text-overflow: ellipsis;
+      border-image-source: url('@/assets/tile_0001.png');
+      border-width: 10px;
+      border-style: solid;
+      border-image-slice: 6 fill;
+      border-image-repeat: repeat;
     }
 
     .announcement-card:hover {
@@ -115,12 +120,12 @@
     .announcement-card h3 {
       margin: 0 0 10px 0;
       font-size: 1.5rem;
-      color: #333;
+      color: #dfdfdf;
     }
 
     .announcement-card p {
       margin: 0;
-      color: #555;
+      color: #dfdfdf;
     }
 
     .no-announcements {
