@@ -18,8 +18,7 @@
     </div>
 
     <div v-if="loading" class="loading">載入中...</div>
-    <div v-else>
-      <div class="problem-list">
+    <div v-else class="problem-list">
         <div v-if="article" class="problem-item">
           <div v-if="article.is_own" class="delete-div" >
             <p class="delete-button" @click="deleteArticle(this.article.id)">刪除文章</p>
@@ -36,7 +35,6 @@
           <div class="problem-number">作者: {{ comment.author }}</div>
           <div class="problem-content">{{ comment.content }}</div>
         </div>
-      </div>
     </div>
 
     <div class="pagination">

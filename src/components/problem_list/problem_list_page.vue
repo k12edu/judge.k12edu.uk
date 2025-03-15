@@ -283,6 +283,8 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
+  margin: 20px 0px;
+  width: 100%;
 }
 
 .problem-item:hover {
