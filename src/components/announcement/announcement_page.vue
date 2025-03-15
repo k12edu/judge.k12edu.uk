@@ -121,8 +121,6 @@ export default {
   border-image-source: url('@/assets/tile_0039.png');
   border-width: 10px;
   border-style: solid;
-  width: 16px;
-  height: 16px;
   border-image-slice: 10 fill;
   border-image-repeat: repeat;
 }
@@ -136,8 +134,8 @@ export default {
   border-image-source: url('@/assets/tile_0000.png');
   border-width: 10px;
   border-style: solid;
-  border-image-slice: 6 fill;
-  border-image-repeat: repeat;
+  /* border-image-slice: 6 fill;
+  border-image-repeat: repeat; */
 }
 .back-button:hover {
   background: #ddd;
