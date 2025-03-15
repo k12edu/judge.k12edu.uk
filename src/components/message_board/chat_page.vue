@@ -19,22 +19,22 @@
 
     <div v-if="loading" class="loading">載入中...</div>
     <div v-else class="problem-list">
-        <div v-if="article" class="problem-item">
-          <div v-if="article.is_own" class="delete-div" >
-            <p class="delete-button" @click="deleteArticle(this.article.id)">刪除文章</p>
-          </div>
-          <div class="problem-number">作者: {{ article.author }}</div>
-          <div class="problem-title">題目: {{ article.problem_title }}</div>
-          <div class="problem-title">標題: {{ article.title }}</div>
-          <div class="problem-content">{{ article.content }}</div>
+      <div v-if="article" class="problem-item">
+        <div v-if="article.is_own" class="delete-div" >
+          <p class="delete-button" @click="deleteArticle(this.article.id)">刪除文章</p>
         </div>
-        <div v-for="comment in comments" :key="comment.id" class="problem-item">
-          <div v-if="comment.is_own" class="delete-div" >
-            <p class="delete-button" @click="deleteComment(comment.id)">刪除留言</p>
-          </div>
-          <div class="problem-number">作者: {{ comment.author }}</div>
-          <div class="problem-content">{{ comment.content }}</div>
+        <div class="problem-number">作者: {{ article.author }}</div>
+        <div class="problem-title">題目: {{ article.problem_title }}</div>
+        <div class="problem-title">標題: {{ article.title }}</div>
+        <div class="problem-content">{{ article.content }}</div>
+      </div>
+      <div v-for="comment in comments" :key="comment.id" class="problem-item">
+        <div v-if="comment.is_own" class="delete-div" >
+          <p class="delete-button" @click="deleteComment(comment.id)">刪除留言</p>
         </div>
+        <div class="problem-number">作者: {{ comment.author }}</div>
+        <div class="problem-content">{{ comment.content }}</div>
+      </div>
     </div>
 
     <div class="pagination">
