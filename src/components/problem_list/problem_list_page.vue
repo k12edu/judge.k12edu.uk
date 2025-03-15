@@ -211,6 +211,11 @@
 
 .tag-filter {
   margin-bottom: 20px;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 
 .tags {
@@ -227,6 +232,12 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s;
+  border-image-source: url('@/assets/tile_0002.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
+  color: white;
 }
 
 .tag-option:hover {
@@ -252,6 +263,11 @@
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
   margin-top: 20px;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 
 .problem-item {

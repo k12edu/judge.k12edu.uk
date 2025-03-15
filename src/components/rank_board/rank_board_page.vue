@@ -171,7 +171,12 @@ p{
   display: grid;
   grid-template-columns: 1fr 2fr 1fr; /* 三個欄位 */
   gap: 10px;
-  margin-top: 20px;
+  margin: 20px 0;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 
 .rank-grid-header {
