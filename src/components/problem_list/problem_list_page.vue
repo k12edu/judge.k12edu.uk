@@ -256,6 +256,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-content: center;
   width: 70%;
 }
 .problem-grid {
@@ -264,7 +265,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  align-content: center;
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
