@@ -220,7 +220,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  justify-items: center;
+  justify-content: space-around;
 }
 
 .tag-option {
