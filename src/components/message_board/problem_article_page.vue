@@ -197,6 +197,11 @@ this.fetchArticles();  // 在組件創建時獲取題目資料
   margin: 20px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 .textarea {
   margin: 20px 0;
