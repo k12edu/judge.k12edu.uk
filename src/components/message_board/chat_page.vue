@@ -250,6 +250,11 @@ export default {
   cursor: pointer;
   border: 0px solid #cccccc00;
   border-radius: 6px;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 .delete-button:hover {
   background: #ff2a2a;
@@ -292,6 +297,11 @@ button.active {
   border: 1px solid #ddd;
   border-radius: 8px;
   background: #f9f9f9;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 .input, .textarea {
   width: 80%;
@@ -304,6 +314,11 @@ button.active {
   margin: 20px 0;
   height: 150px;
   resize: none;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 .submit-btn {
   width: 100%;
@@ -313,6 +328,11 @@ button.active {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 .submit-btn:hover {
   background: #0056b3;
@@ -352,5 +372,10 @@ button.active {
   background: #f1f1f1;
   padding: 10px;
   border-radius: 5px;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 </style>

@@ -284,6 +284,11 @@ export default {
     text-align: center;
     user-select: none; 
     cursor: pointer;
+    border-image-source: url('@/assets/tile_0000.png');
+    border-width: 10px;
+    border-style: solid;
+    border-image-slice: 6 fill;
+    border-image-repeat: repeat;
   }
 
   .btn:hover {
@@ -301,6 +306,11 @@ export default {
   width: 100%;  /* 設為 100% 寬度 */
   overflow: auto;
   margin-bottom: 100px;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 .problem-description {
   border: 1px solid #ccc;
@@ -308,6 +318,11 @@ export default {
   border-radius: 8px;
   background-color: #f9f9f9;
   width: 100%;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 .description-content {
   white-space: pre-wrap; /* 保留換行與空白 */
