@@ -9,7 +9,7 @@
         <router-link to="/rank" class="menu-item">排行榜</router-link>
       </nav>
       <div :key="isLogin">
-        <div style="width: 150px;" v-if="!isLogin" id="google-signin-button" @click="googleLogin"></div>
+        <div style="width: 150px; margin-right: 30px;" v-if="!isLogin" id="google-signin-button" @click="googleLogin"></div>
         <router-link style="width: 150px;" v-if="isLogin" :to="{ path: '/profile', query: { id: 0 } }" class="menu-item">個人資料</router-link>
       </div>
     </div>
