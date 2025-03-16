@@ -220,12 +220,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  align-content: center;
 }
 
 .tag-option {
   display: flex;
-  /* align-items: center; */
-  align-content: center;
+  align-items: center;
+  /* align-content: center; */
   padding: 5px 10px;
   border: 2px solid lightblue;
   border-radius: 5px;
@@ -287,7 +288,7 @@
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
   margin: 20px 20px;
-  width: 100%;
+  width: 80%;
   border-image-source: url('@/assets/tile_0000.png');
   border-width: 10px;
   border-style: solid;
