@@ -108,6 +108,7 @@
 
     // 跳轉到首頁
     this.$router.push({ name: "home" });
+    window.location.reload();
   },
 
 
