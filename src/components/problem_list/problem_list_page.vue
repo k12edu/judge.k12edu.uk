@@ -260,6 +260,8 @@
 .problem-grid {
   /* display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); */
+  display: flex;
+  justify-content: center;
   width: 100%;
   gap: 20px;
   margin-top: 20px;
