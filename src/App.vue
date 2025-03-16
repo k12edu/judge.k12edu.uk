@@ -126,6 +126,7 @@
     this.access_token = "";
     this.isLogin = false;
     this.clearCookie()
+    this.$forceUpdate(); 
     // 跳轉到首頁
     this.$router.push({ name: "home" });
   },
