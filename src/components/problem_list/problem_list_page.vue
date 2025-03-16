@@ -224,7 +224,7 @@
 
 .tag-option {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   align-content: center;
   padding: 5px 10px;
   border: 2px solid lightblue;
@@ -262,6 +262,10 @@
   /* display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); */
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
   justify-content: center;
   width: 100%;
   gap: 20px;
