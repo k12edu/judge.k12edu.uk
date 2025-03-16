@@ -287,7 +287,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
-  margin: 20px 20px;
+  margin: 10px 10px;
   width: 80%;
   border-image-source: url('@/assets/tile_0000.png');
   border-width: 10px;

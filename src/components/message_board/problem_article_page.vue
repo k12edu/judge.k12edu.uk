@@ -185,6 +185,11 @@ this.fetchArticles();  // 在組件創建時獲取題目資料
   border: 1px solid #ddd;
   border-radius: 8px;
   background: #f9f9f9;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 .input, .textarea {
   width: 80%;
@@ -197,6 +202,11 @@ this.fetchArticles();  // 在組件創建時獲取題目資料
   margin: 20px 0;
   height: 150px;
   resize: none;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 .submit-btn {
   width: 100%;
@@ -206,9 +216,11 @@ this.fetchArticles();  // 在組件創建時獲取題目資料
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-.submit-btn:hover {
-  background: #0056b3;
+  border-image-source: url('@/assets/tile_0003.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 
 .problem-list-container {
