@@ -82,13 +82,13 @@ export default {
         this.profileData = data; // 更新 profileData
       } catch (err) {
         this.error = '無法取得個人資料，請稍後再試';
-        
-        if(userId==0) {
+        this.$router.push({ name: "home" });
+        // if(userId==0) {
           
-          setTimeout(() => {
-            this.$router.push({ name: "home" });
-          }, 500); // 500 毫秒（0.5秒）
-        }
+        //   setTimeout(() => {
+        //     this.$router.push({ name: "home" });
+        //   }, 500); // 500 毫秒（0.5秒）
+        // }
         console.error(err);
       } finally {
         this.loading = false;
