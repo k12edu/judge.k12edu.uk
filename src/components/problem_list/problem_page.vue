@@ -325,7 +325,7 @@ export default {
   border-image-repeat: repeat;
 }
 .l-select{
-  background-color: #f9f9f9;
+  border-radius: 8px;
   border-image-source: url('@/assets/tile_0000.png');
   border-width: 10px;
   border-style: solid;
