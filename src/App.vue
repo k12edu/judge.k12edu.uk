@@ -94,6 +94,26 @@
         console.error("請求失敗:", error);
       }
     },
+    async clearCookie() {
+      
+      try {
+        const response = await fetch(
+          `${this.api_url}/accounts/api/auth/clear_cookie/`,
+          {
+            method: "GET",
+            credentials: "include", // 確保請求攜帶 Cookie
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+          console.log("already clear:", data.token);
+        }
+      } catch (error) {
+        console.error("請求失敗:", error);
+      }
+    },
 
     logout() {
     // 刪除 cookie
@@ -105,10 +125,9 @@
     // 清空 local state 或 session
     this.access_token = "";
     this.isLogin = false;
-
+    this.clearCookie()
     // 跳轉到首頁
     this.$router.push({ name: "home" });
-    window.location.reload();
   },
 
 
