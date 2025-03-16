@@ -225,6 +225,7 @@
 .tag-option {
   display: flex;
   align-items: center;
+  align-content: center;
   padding: 5px 10px;
   border: 2px solid lightblue;
   border-radius: 5px;
