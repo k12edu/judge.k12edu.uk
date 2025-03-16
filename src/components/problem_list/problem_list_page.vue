@@ -276,6 +276,7 @@
   border-style: solid;
   border-image-slice: 6 fill;
   border-image-repeat: repeat;
+  padding: 4px 0px;
 }
 
 
