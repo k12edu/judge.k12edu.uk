@@ -82,6 +82,7 @@ export default {
         this.profileData = data; // 更新 profileData
       } catch (err) {
         this.error = '無法取得個人資料，請稍後再試';
+        if(userId==0) this.$router.push({ name: "home" });
         console.error(err);
       } finally {
         this.loading = false;
