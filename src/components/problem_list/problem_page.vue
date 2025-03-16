@@ -20,7 +20,7 @@
       <button style="margin: 0px 10px;" @click="submitCode" class="btn">提交</button>
       <button style="margin: 0px 10px;" @click="gotoArticleList" class="btn">討論區</button>
     </div>
-    <select v-model="language" @change="changeLanguage">
+    <select class="l-select" v-model="language" @change="changeLanguage">
       <option value="java">Java</option>
       <option value="python">Python</option>
       <option value="c">C</option>
@@ -318,6 +318,13 @@ export default {
   border-radius: 8px;
   background-color: #f9f9f9;
   width: 100%;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
+}
+.l-select{
   border-image-source: url('@/assets/tile_0000.png');
   border-width: 10px;
   border-style: solid;

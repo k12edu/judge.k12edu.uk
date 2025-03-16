@@ -377,5 +377,6 @@ button.active {
   border-style: solid;
   border-image-slice: 6 fill;
   border-image-repeat: repeat;
+  margin: 20px 0px 10px 0px;
 }
 </style>
