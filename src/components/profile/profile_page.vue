@@ -2,7 +2,7 @@
   <div class="profile-container">
     <div class="top-bar">
       <p class="back-button" @click="goBack">返回上一頁</p>
-      <p v-if="this.$route.query.id==0 && isLogin" class="logout-button" @click="handleLogout">登出</p>
+      <p v-if="this.$route.query.id==0 && isLogin && !isEmbedded" class="logout-button" @click="handleLogout">登出</p>
     </div>
 
     <h1>個人檔案</h1>
@@ -53,6 +53,7 @@ export default {
       profileData: {},   // 儲存從後端獲取的資料
       loading: true,     // 載入狀態
       error: null,       // 錯誤訊息
+      isEmbedded: false,
     };
   },
   inject: ['api_url', 'access_token', 'logout', 'isLogin'],
@@ -105,6 +106,7 @@ export default {
   },
   mounted() {
     this.fetchProfileData(); // 組件掛載時請求資料
+    this.isEmbedded = window.self !== window.top;
   },
 };
 </script>
