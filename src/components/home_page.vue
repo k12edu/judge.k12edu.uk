@@ -23,7 +23,7 @@
         <div class="features">
             <div class="feature">
             <h4>程式語言</h4>
-            <p>支援Python、Java、C、C++四種語言。</p>
+            <p>支援Python、C、C++三種語言。</p>
             </div>
             <div class="feature">
             <h4>學習範圍</h4>
