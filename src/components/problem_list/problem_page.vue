@@ -13,8 +13,14 @@
       <div v-else class="description-content">{{ description }}</div>
     </div>
     <div class="textarea-container">
-      <textarea readonly class="readonly-textarea" :value="'輸入範例\n1 2 3\n4 5 6'"></textarea>
-      <textarea readonly class="readonly-textarea" :value="'輸出範例\n6 5 4\n3 2 1'"></textarea>
+      <div class="textarea-block">
+        <div class="textarea-label">標準輸入</div>
+        <textarea readonly class="readonly-textarea" :value="'1 2 3\n4 5 6'"></textarea>
+      </div>
+      <div class="textarea-block">
+        <div class="textarea-label">標準輸出</div>
+        <textarea readonly class="readonly-textarea" :value="'6 5 4\n3 2 1'"></textarea>
+      </div>
     </div>
     <div v-if="problem" class="v-container">
       <p>標籤: {{ getTag}}</p>
@@ -351,8 +357,21 @@ export default {
   gap: 20px;
   margin: 20px 0;
 }
-.readonly-textarea {
+
+.textarea-block {
+  display: flex;
+  flex-direction: column;
   width: 48%;
+}
+
+.textarea-label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  font-size: 16px;
+  color: #333;
+}
+
+.readonly-textarea {
   height: 150px;
   resize: none;
   padding: 10px;
@@ -367,4 +386,5 @@ export default {
   border-image-slice: 6 fill;
   border-image-repeat: repeat;
 }
+
 </style>
