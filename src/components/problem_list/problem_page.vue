@@ -15,11 +15,11 @@
     <div class="textarea-container">
       <div class="textarea-block">
         <div class="textarea-label">標準輸入</div>
-        <textarea readonly class="readonly-textarea" :value="'1 2 3\n4 5 6'"></textarea>
+        <textarea readonly class="readonly-textarea" v-model="test_case_input"></textarea>
       </div>
       <div class="textarea-block">
         <div class="textarea-label">標準輸出</div>
-        <textarea readonly class="readonly-textarea" :value="'6 5 4\n3 2 1'"></textarea>
+        <textarea readonly class="readonly-textarea" v-model="test_case_output"></textarea>
       </div>
     </div>
     <div v-if="problem" class="v-container">
@@ -55,6 +55,8 @@ export default {
   name: 'CodeEditor',
   data() {
     return {
+      test_case_input:'暫無資料',
+      test_case_output:'暫無資料',
       request_time:0,
       problem:null,
       description: '', // 題目敘述內容
