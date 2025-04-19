@@ -12,6 +12,10 @@
       <div v-else-if="error" class="error-message">{{ error }}</div>
       <div v-else class="description-content">{{ description }}</div>
     </div>
+    <div class="textarea-container">
+      <textarea readonly class="readonly-textarea" :value="'輸入範例\n1 2 3\n4 5 6'"></textarea>
+      <textarea readonly class="readonly-textarea" :value="'輸出範例\n6 5 4\n3 2 1'"></textarea>
+    </div>
     <div v-if="problem" class="v-container">
       <p>標籤: {{ getTag}}</p>
     </div>
@@ -341,5 +345,22 @@ export default {
 }
 .error-message {
   color: red;
+}
+
+.readonly-textarea {
+  width: 48%;
+  height: 150px;
+  resize: none;
+  padding: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  border-image-source: url('@/assets/tile_0000.png');
+  border-width: 10px;
+  border-style: solid;
+  border-image-slice: 6 fill;
+  border-image-repeat: repeat;
 }
 </style>
