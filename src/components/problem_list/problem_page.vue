@@ -110,8 +110,8 @@ export default {
           throw new Error(`HTTP 錯誤：${response.status}`);
         }
         const data = await response.json();
-        this.test_case_input=data.problem.problem.stand_input;
-        this.test_case_output=data.problem.problem.stand_output;
+        this.test_case_input=data.problem.stand_input;
+        this.test_case_output=data.problem.stand_output;
         this.problem=data.problem;
         this.description = data.problem.problem_description || '無法取得題目內容';
       } catch (err) {
