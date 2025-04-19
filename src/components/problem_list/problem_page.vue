@@ -345,7 +345,12 @@ export default {
 .error-message {
   color: red;
 }
-
+.textarea-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 20px 0;
+}
 .readonly-textarea {
   width: 48%;
   height: 150px;
