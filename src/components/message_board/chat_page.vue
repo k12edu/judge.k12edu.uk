@@ -291,7 +291,8 @@ button.active {
   border-image-source: url('@/assets/tile_0003.png');
 }
 .new-comment {
-  max-width: 600px;
+  max-width: 70%;
+  width: 70%;
   margin: 20px auto;
   padding: 20px 20px;
   border: 1px solid #ddd;
@@ -366,6 +367,7 @@ button.active {
   border-image-slice: 6 fill;
   border-image-repeat: repeat;
   width:70%;
+  margin-bottom: 40px;
 }
 
 .problem-content {

@@ -25,7 +25,6 @@
       <button style="margin: 0px 10px;" @click="gotoArticleList" class="btn">討論區</button>
     </div>
     <select class="l-select" v-model="language" @change="changeLanguage">
-      <option value="java">Java</option>
       <option value="python">Python</option>
       <option value="c">C</option>
       <option value="cpp">C++</option>
