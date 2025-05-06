@@ -17,7 +17,7 @@
     <footer class="footer">
       <div class="footer-container">
         <div>
-          <p>© 2025 Your Company. All Rights Reserved.</p>
+          <p>© RFID實驗室 B1143027陳柏豪</p>
         </div>
       </div>
     </footer>
